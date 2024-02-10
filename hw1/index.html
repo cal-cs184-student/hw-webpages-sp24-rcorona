@@ -81,7 +81,57 @@
     </tr>
   </table>
 </div>
+
+<h3 align="middle">Part 2: Antialiasing triangles</h3>
   
+<p>
+<b>Data Structures:</b> My algorithm primarily uses the <i>sample_buffer</i> to maintain a super-sampled image during rasterization, the size of this buffer will be the (width * height * sample_rate). <br>
+  Additionally, I maintain a <i>sqrt_sample_rate</i> variable which is only computed once per sample rate change such that we don't have to perform a sqrt operation each time we need it. 
+</p>
+
+<p>
+<b>Algorithm Walkthrough</b>: When rasterizing a triangle, the algorithm first scales the coordinates of the triangle by <i>sqrt_sample_rate</i> in order to get it at the scale of the now super-sampled sample buffer.<br>
+  Following this, rasterization of the triangle follows as usual, with the rasterizer looping over the pixels in the bounding box of the (now scaled) triangle. <br>
+  After all the triangles are rasterized and <i>resolve_to_frame_buffer</i> is called, the algorithm will compute the color value of each frame buffer pixel by averaging the values of all sample_buffer locations pertaining to that pixel.<br>
+  During frame buffer resolution process, the sample buffer coordinates for pixel (x,y) will be ((j * width * sqrt_sample_rate), (y * width * sample_rate)) for i,j in [0, sqrt_sample_rate]. 
+</p>
+
+  <p>
+  <b>Why is super-sampling useful?:</b> Super-sampling is useful because it scales the sampling frequency by sqrt_sample_rate in each axis, reducing aliasing. <br>
+    Increasing the sample frequency combats aliasing because it raises the Nyquist frequency (the rate which signal frequencies must stay below in order to avoid aliasing) for the signal, which is going to be half the sample rate. <br>
+    In other words, because we are increasing the frequency of the samples, we are able to capture faster ocurring changes in the image. 
+  </p>
+  <p>
+  <b>What modifications did I make?:</b> Firstly, the sample buffer data structure was dynamically updated to be able to fit the appropriate number of samples. <br>
+    In both the <i>set_sample_rate</i> and <i>set_framebuffer_target</i> methods the sample buffer is resized to (width * height * sample_rate) to accomodate the samples. <br>
+    The <i>fill_pixel</i> method was modified to access the sample buffer at the (y * width * sqrt_sample_rate + x) location in order to accomodate the scaled coordinates. <br>
+    Lastly, the <i>rasterize_triangle</i> and <i>resolve_to_frame_buffer</i> methods were modified as described above. 
+  </p>
+  <p>
+  Below is a side-by-side comparison of sample rates of 1, 4, and 16 with the pixel inspecto zoomed over the left corner of the red triangle in <i>basic/test4.svg</i>.<br>
+  As may be observed, the corner becomes smoother as the sampling rate increases. 
+  </p>
+<div align="middle">
+  <table style="width=100%">
+    <tr>
+      <td>
+        <img src="images/task2_1.png" align="middle" width="400px"/>
+        <figcaption align="middle">Sampling rate of 1.</figcaption>
+      </td>
+      <td>
+        <img src="images/task2_4.png" align="middle" width="400px"/>
+        <figcaption align="middle">Sampling rate of 4.</figcaption>
+      </td>
+      <td>
+        <img src="images/task2_16.png" align="middle" width="400px"/>
+        <figcaption align="middle">Sampling rate of 16.</figcaption>
+      </td>
+    </tr>
+  </table>
+</div>
+
+<h3 align="middle">Part 3: Transforms</h3>
+
 <div align="middle">
   <table style="width=100%">
     <tr>
@@ -107,15 +157,6 @@
     </tr>
   </table>
 </div>
-
-
-<h3 align="middle">Part 2: Antialiasing triangles</h3>
-
-
-
-<h3 align="middle">Part 3: Transforms</h3>
-
-
 
 <h2 align="middle">Section II: Sampling</h2>
 
