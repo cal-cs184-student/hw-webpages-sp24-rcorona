@@ -43,9 +43,9 @@
   </p>
   <p>
   <b>Helper Functions:</b><br>
-  <i>line_test</i>: This helper takes as input a pair of points ((x_0, y_0), (yx_1, y_1)) defining a line and a third point (x,y ) to serve as a query. 
-  It performs a line test by first defining two vectors: V = (x - x0, y - y0), i.e. the vector from the first line point to the query point, and 
-  N = (-(y1 - y0), x1 - x0), i.e. a vector perpendicular to the line. 
+  <i>line_test</i>: This helper takes as input a pair of points ((x_0, y_0), (x_1, y_1)) defining a line and a third point (x,y ) to serve as a query. 
+  It performs a line test by first defining two vectors: <br>V = (x - x0, y - y0), i.e. the vector from the first line point to the query point, and 
+  <br>N = (-(y1 - y0), x1 - x0), i.e. a vector perpendicular to the line. 
   Having defined these two vectors, the function returns the result of their dot product, which will be positive
   if the query point lies on the positive half-plane of the line, 0 if it lies directly on the line, or negative if it lies in the negative half-plane. 
   </p>
