@@ -109,7 +109,10 @@
   </p>
   <p>
   Below is a side-by-side comparison of sample rates of 1, 4, and 16 with the pixel inspecto zoomed over the left corner of the red triangle in <i>basic/test4.svg</i>.<br>
-  As may be observed, the corner becomes smoother as the sampling rate increases. 
+  As may be observed, the corner becomes smoother as the sampling rate increases. <br>
+  To have a smoother image, the ideal color (assuming there is only one triangle + the background in a pixel) would be the color of the triangle weighted by the proportion of the pixel which the triangle is filling. <br>
+  However, solving this analyitically would be much more expensive, and so samples are taken to approximate this proportion. <br>
+  Higher sampling rates yield better approximations of the true proportion, and thus higher sample rates yield smoother images with less aliasing. 
   </p>
 <div align="middle">
   <table style="width=100%">
