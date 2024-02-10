@@ -37,25 +37,30 @@
 <h2 align="middle">Section I: Rasterization</h2>
 
 <h3 align="middle">Part 1: Rasterizing single-color triangles</h3>
-
+  
   <p>
-<b>Top-down Walkthrough: </b> First, the algorithm determines the bounding box of the triangle by finding the maximum and minimum x and y coordinates in \{x0, x1, x2\} and \{y0, y1, y2\}. 
-  Having determined the bounding box a nested for loop (one for x and one for y coordinates) from the minimum (integer) x,y to the maximum, checking if the coordinate (x + 0.5, y + 0.5) 
-  lies within the triangle (using a helper function named <i>inside</i>, which takes as input the three triangle vertex coordinates and a query point). 
-  Coordinates determined to be within the triangle are filled onto the screen with the provided color argument. 
-  </p>
-  <p>
-  The <i>inside</i> helper function uses a <i>line_test</i> helper which, given two points on a line and a query point, determines which half-plane the query point lies in (or if it lies directly on the line). 
-  As a first step, the <i>inside</i> function checks which direction denotes the inside of the triangle if we follow lines P0 --> P1, P1 --> P2, and P2 --> P0. 
-  The direction is determined by performing a line test using P0 and P1 as the two line points and P2 as the query point; if the line test is positive then points in the triangle will 
-  lie on the positive half-plane of each triangle edge (or on the negative half-plane if the line test is negative). 
-  Having determined the correct direction, the function then performs a line test for the query pixel on each edge (determined by each pair of triangle vertices), if all line tests are 0 or 
-  in the inside direction then the function returned true (and otherwise false). 
-  </p>
-  <p>
-  The <i>line_test</i> helper function performs the line test by first defining two vectors: V = (x - x0, y - y0), i.e. the vector from the first line point to the query point, and 
-  N = (-(y1 - y0), x1 - x0), i.e. a vector perpendicular to the line. Having defined these two vectors, the function returns the result of their dot product, which will be positive
+  My algorithm uses a couple of helper functions, which I will describe first, I will then conclude with a high level overview of the algorithm.\n  
+  <b>Helper Functions:</b>\n
+  <i>line_test</i>: This helper takes as input a pair of points ((x_0, y_0), (yx_1, y_1)) defining a line and a third point (x,y ) to serve as a query. 
+  It performs a line test by first defining two vectors: V = (x - x0, y - y0), i.e. the vector from the first line point to the query point, and 
+  N = (-(y1 - y0), x1 - x0), i.e. a vector perpendicular to the line. 
+  Having defined these two vectors, the function returns the result of their dot product, which will be positive
   if the query point lies on the positive half-plane of the line, 0 if it lies directly on the line, or negative if it lies in the negative half-plane. 
+  </p>
+  <p>
+  <i>inside</i>: Given three triangle points and a query point, this helper function determines if the query lies in the triangle. 
+  As a first step, the function checks which direction denotes the inside of the triangle if we follow the vertexi winding order of P0 --> P1, P1 --> P2, and P2 --> P0. 
+  The direction is determined by performing a line test using P0 and P1 as the two line points and P2 as the query point. 
+  If the direction line test is positive, then points in the triangle will lie on the positive half-plane of each triangle edge (or, conversely, on the negative half-plane if the line test is negative). 
+  Therefore, a <i>direction</i> variable is set to +1 or -1 depending on the result of th direction line test. 
+  Having determined the correct direction, the function then performs a line test for the query pixel on each edge (determined by each pair of triangle vertices) and multiplying it by the direction variable.
+  If all line tests are >= 0 then that means the point lies on the correct side of each edge and the function returns True (and otherwise returnes False). 
+  </p>
+  <p>
+  <b>High-level overview: </b> First, the algorithm determines the bounding box of the triangle by finding the maximum and minimum x and y coordinates in \{x0, x1, x2\} and \{y0, y1, y2\}. 
+  Having determined the bounding box, a nested for loop (one for x and one for y coordinates) from the minimum (integer) x,y to the maximum in increments of 1 is traversed. 
+  For each pair of (x,y) query points in the loop, the algorithm performs an <i>inside</i> test on the sample point (x + 0.5, y + 0.5) to determine if the point lies in the triangle or not.  
+  If the sample point lies within the triangle then the pixel (x,y) is filled. 
   </p>
   <p>
   <b>Difficult Part</b> I had the most trouble with making the algorithm robust to triangle vertex winding ordering. At first my algorithm assumed that all 3 line tests being non-negative 
