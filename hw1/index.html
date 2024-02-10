@@ -39,8 +39,10 @@
 <h3 align="middle">Part 1: Rasterizing single-color triangles</h3>
   
   <p>
-  My algorithm uses a couple of helper functions, which I will describe first, I will then conclude with a high level overview of the algorithm.\n  
-  <b>Helper Functions:</b>\n
+  My algorithm uses a couple of helper functions, which I will describe first, I will then conclude with a high level overview of the algorithm.
+  </p>
+  <p>
+  <b>Helper Functions:</b><br>
   <i>line_test</i>: This helper takes as input a pair of points ((x_0, y_0), (yx_1, y_1)) defining a line and a third point (x,y ) to serve as a query. 
   It performs a line test by first defining two vectors: V = (x - x0, y - y0), i.e. the vector from the first line point to the query point, and 
   N = (-(y1 - y0), x1 - x0), i.e. a vector perpendicular to the line. 
