@@ -160,7 +160,26 @@ Lastly, the legs were colored blue and the arms were colored green.
 
 <h3 align="middle">Part 4: Barycentric coordinates</h3>
 
+Barycentric coordinates are the coordinates for a point in relation to the vertices of a triangle. <br>
+Each of the three coordinates, (alpha, beta, gamma), represent the relative weight the proximity of each vertex has to a given query point. 
+In other words, the barycentric coordinates represent the spatial weighted sum of the three vertices which would result in the coordinates 
+of the query point. <br>
+Because these weights vary smoothly, as one moves the query point across the triangle, then these same weights can be used to smoothly interpolate
+any other value (e.g. color, surface normals, etc.) across the triangle. 
+For example, the image below uses barycentric coordinates to smoothly interpolate the color values of a red, green, and blue cornered triangle across the
+body of the triangle. 
 
+<div align="middle">
+  <table style="width=100%">
+    <tr>
+      <td>
+        <img src="images/task4_gradient.png" align="middle" width="400px"/>
+        <figcaption align="middle">Cubeman jumping and raising their hands up in the air.</figcaption>
+      </td>
+    </tr>
+  </table>
+</div>
+  
 <h3 align="middle">Part 5: "Pixel sampling" for texture mapping</h3>
 
 
