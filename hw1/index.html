@@ -267,7 +267,27 @@ However, if the image is magnified or minified (i.e. the sampling rate in the im
 </p>
 <h3 align="middle">Part 6: "Level sampling" with mipmaps for texture mapping</h3>
 
-
+<p>
+  <b>Level Sampling Discussion:</b> To avoid aliasing in the rasterized image, the sampling rate in the image is ideally in sync with the sampling rate in the texture, i.e. moving one pixel in the image corresponds to one texel move in the texture. <br>
+  Unfortunately, the rate of change of pixels to texels is not always one, and also may dynamically vary across the image, in some places being higher or lower than 1. <br>
+  Level sampling combats this problem by precomputing an image pyramid (in this case known as a mipmap) of varying downsampled resolutions of the texture. <br>
+  Precomputing the downsamples effectively lowers the frequency of each image in the mipmap by a rate of 1/2, where a level x pertains to a rate of change of 2^x in terms of how many texels are traversed per pixel change <br>
+  (e.g. if every pixel change pertains to two texels, then the ideal mipmap level is log(2) == 1). <br>
+  By precomputing the downsampled textures and then dynamically selecting texel samples per pixel based on the current rate of change in the image allows for anti-aliasing in the rasterized image.
+</p>
+  <p>
+    <b>Implementation:</b> For our implementation, the mipmap was already precomputed, so only implementation of dynamic level selection was required. <br>
+    To compute the level for a given pixel, the uv coordinates of that pixel as well as the pixel to the right and the pixel below are computed (these pixels are pixels in the image <i>before</i> super sampling, ie. (x + sqrt_sample_rate, y + sqrt_sample_rate). <br>
+    These values are computed within <i>rasterize_textured_triangle</i> and used to populate a <i>SampleParams</i> struct.
+  </p>
+  <p>
+    Within the <i>get_level</i> method, the rate of change from pixels to texels is computed for each axis by first taking the difference between the sample (u,v) coordinates and the (u,v) coordinates of the pixel on the right and the pixel below. <br>
+    These differences are scaled by the width and height of the texture in order to arrive at a rate of change in the space of texels. <br>
+    The log of the max of the norms of the two difference vectors is taken to arrive at an approximate ideal level for the pixel sample. <br>
+    Before taking the log, edge cases are handled by setting the level to 0 if the max of the norms is < 1.0 (i.e. log would return a negative) or by 
+      clipping the level to the last level if the computed level value is higher than that. 
+    
+  </p>
 
 <h2 align="middle">Section III: Art Competition</h2>
 <p>If you are not participating in the optional art competition, don't worry about this section!</p>
