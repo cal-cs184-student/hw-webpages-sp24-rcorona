@@ -195,6 +195,28 @@ Additionally, here is an image of a full color gradient wheel rasterized using b
   
 <h3 align="middle">Part 5: "Pixel sampling" for texture mapping</h3>
 
+  <p>
+<b>Pixel Sampling Definition:</b> Pixel sampling from textures is the process through which color samples from an image, known as the texture, are mapped to screen space during the rasterization process. <br>
+  To do this, a bijective function is defined which maps from coordinates in screen space (or coordinates in a mesh) to coordinates within the texture image (referred to as the (u,v) coordinates of the point). <br>
+  The rate of change of this mapping function need not be constant, i.e. du/dx, du/dy, dv/dx, and dv/dy are not necessarily across screen space. <br>
+    Coordinates (u,v) lie in the continuous range [0,1], and thus when converting to discrete texel coordinates in the texture image, they must be scaled by the width and height of the texture image and then discretized int an integer coordinate. 
+  </p>
+<p>
+  <b>Implementation:</b> TODO
+</p>
+  <p>
+    <b>Sampling Methods</b>
+  </p>
+  <p>
+    <i>Nearest Neighbor Sampling:</i> Given a (u,v) in the texture space for a screen space coordinate (x,y), nearest neighbor sampling returns the texel (texture image pixel) pertaining to the nearest discrete coordinate in the texture image. <br>
+    Assuming that sampling is performed based on distance to texel center (i.e. the distance to each texel is computed from (tx + 0.5, ty + 0.5)) then the nearest discrete texel coordinate for a continuous (u,v) is going to be the floor of each of those two values. 
+  </p>
+  <p>
+    <i>Bilinear Sampling<:i/> Bilinear sampling computes the returned texture sample as the weighted average of the four nearest texels to a given (u,v) coordinate (with the weights being proportional to the distance). <br>
+      The appropriate interpolation can be performed by a sequence of three lerp (linear interpolation) operations. <br>
+      First, the two texels in each row are linearly interpolated into intermediate color values proportionally to their horizontal distance from the sample (u,v) point. <br>
+      Next, the two intermediate values are linearly interpolated into a final value proprtionally to their vertical distance from the sample (u,v) point. The result of this third lerp is what is returned as the texture sample.  
+  </p>
 
 <h3 align="middle">Part 6: "Level sampling" with mipmaps for texture mapping</h3>
 
