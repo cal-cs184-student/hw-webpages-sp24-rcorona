@@ -286,8 +286,33 @@ However, if the image is magnified or minified (i.e. the sampling rate in the im
     The log of the max of the norms of the two difference vectors is taken to arrive at an approximate ideal level for the pixel sample. <br>
     Before taking the log, edge cases are handled by setting the level to 0 if the max of the norms is < 1.0 (i.e. log would return a negative) or by 
       clipping the level to the last level if the computed level value is higher than that. 
-    
   </p>
+  <p>
+    <b>Tradeoffs:</b> 
+  </p>
+    <p>
+      <i>Memory:</i> For an image of dimensions (W,H) and texture image of dimensions (WT, HT) the base amount of memory storage required is (W * H) + (WT * HT)<br>
+      Increasing the sampling rate by value S will result in image memory requirement of (S * W * H), i.e. scale it by S, in order to accomodate the new sample buffer. <br>
+      Using level sampling will increase the memory requirement by approximately 1/3 * (WT * HT), since the downsampled mipmap levels can effectively be stored in memory the size of one of the RGB channels of the full size texture. <br>
+      Changing the pixel sampling strategy will not heavily impact memory requirements since the only additional overhead required is the intermediate storage of 4 color values in the case of bilinear sampling, but that is done per pixel sample and does not persist in memory. 
+    </p>
+      <p>
+      <i>Speed:</i> For speed there is a base compute cost of O(W * H), since the number of operations will scale with the image size. <br>
+        Similarly to memory, increasing the sampling rate scales the compute cost by S since all of the operations are repeated for all all sampled pixels, i.e O(S * W * H) <br>
+        Level sampling adds a constant amount of compute cost to each sample's operations, since the number of operations needed per sample does not depend on the image nor on the texture dimensions. <br>
+        Bilinear level sampling adds an additional constant cost to computations that does not scale with image nor texture dimensions. 
+        Therefore level sampling results in a cost of O(W * H + (W * H) O(1)) == O(W * H). <br>
+        Changing the pixel sampling strategy also adds a constant cost to the computation, with bilinear pixel sampling being more expensive than nearest neighbor but still adding a constant cost that does not scale with image nor texture dimensions.
+      </p>
+      <p>
+        <i>Anti-aliasing Power:</i> Increasing the sampling rate effectively doubles the sampling frequency in each axis, also doubling the Nyquist frequency and therefore doubling the maximum frequency that can be represented in the image before aliasing occurs. <br>
+        Level sampling dynamically selects a level of downsampling/averaging in the texture image per sampled image pixel, which effectively allows it to lower the frequency of the texture image by as much as a factor log_2(max_level).<br>
+        Bilinear pixel sampling effectively halfs the frequency of the texture image, which would be comparable to doubling the Nyquist frequency in the texture space. Nearest neighbor pixel sampling does not anti-alias. <br>
+      </p>
+      <p>
+        <b>Overall assessment:</b> Overall it appears that mipmap level sampling likely has the best tradeoff between memory/compute costs and anti-aliasing power since it allows for dynamic texture frequency sampling while only adding a <br>
+        constant cost to computation and memory. Super-sampling if raised high enough will have the strongest anti-aliasing effect but will also incur the greatest computational costs. 
+      </p>
 
 <h2 align="middle">Section III: Art Competition</h2>
 <p>If you are not participating in the optional art competition, don't worry about this section!</p>
