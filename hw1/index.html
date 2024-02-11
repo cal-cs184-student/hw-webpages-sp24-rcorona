@@ -202,22 +202,61 @@ Additionally, here is an image of a full color gradient wheel rasterized using b
     Coordinates (u,v) lie in the continuous range [0,1], and thus when converting to discrete texel coordinates in the texture image, they must be scaled by the width and height of the texture image and then discretized int an integer coordinate. 
   </p>
 <p>
-  <b>Implementation:</b> TODO
+  <b>Implementation: The rasterization algorithm is nearly identical to the prior two triangle rasterization methods, differing only in what is done one a sample point is determined to be inside the triangle. <br>
+    If a point is inside the triangle, I first compute the barycentric coordinates for that point, and use the barycentri coordinate weights to compute the sample points (u,v) coordinates as a weighted sum of the (u,v) coordinates of each triangel vertex. <br>
+    Having computed the sample point's (u,v) coordinates, the algorithm then samples a color value using one of the two sampling methods described below. 
 </p>
   <p>
-    <b>Sampling Methods</b>
+    <b>Sampling Method Descriptions:</b> For each of the two sampling methods below, the sample point's continuous texel coordinates are first computed: (tx, ty) = (u * texture_width, v * texture_height). <br>
+    These continuos texel coordinates are then used by each of the two sampling methods as described below. 
   </p>
   <p>
-    <i>Nearest Neighbor Sampling:</i> Given a (u,v) in the texture space for a screen space coordinate (x,y), nearest neighbor sampling returns the texel (texture image pixel) pertaining to the nearest discrete coordinate in the texture image. <br>
-    Assuming that sampling is performed based on distance to texel center (i.e. the distance to each texel is computed from (tx + 0.5, ty + 0.5)) then the nearest discrete texel coordinate for a continuous (u,v) is going to be the floor of each of those two values. 
+    <i>Nearest Neighbor Sampling:</i> Given a continuous texel coordinate (tx, ty), nearest neighbor sampling returns the texel (texture image pixel) pertaining to the nearest discrete coordinate in the texture image. <br>
+    Assuming that sampling is performed based on distance to texel center (i.e. the distance to each texel is computed from (tx + 0.5, ty + 0.5)) <br>
+    then the nearest discrete texel coordinate for a continuous (tx,ty) is going to be the floor of each of those two values, i.e. (floor(tx), floor(ty)). 
   </p>
   <p>
-    <i>Bilinear Sampling<:i/> Bilinear sampling computes the returned texture sample as the weighted average of the four nearest texels to a given (u,v) coordinate (with the weights being proportional to the distance). <br>
+    <i>Bilinear Sampling<:i/> Bilinear sampling computes the returned texture sample as the weighted average of the four nearest texels to a given (tx,ty) coordinate (with the weights being proportional to the distance) from it. <br>
       The appropriate interpolation can be performed by a sequence of three lerp (linear interpolation) operations. <br>
-      First, the two texels in each row are linearly interpolated into intermediate color values proportionally to their horizontal distance from the sample (u,v) point. <br>
-      Next, the two intermediate values are linearly interpolated into a final value proprtionally to their vertical distance from the sample (u,v) point. The result of this third lerp is what is returned as the texture sample.  
+      First, the two texels in each row (where each row contains two of the four nearest texels to the sample point) are linearly interpolated into intermediate color values proportionally to their horizontal distance from the sample (tx,ty) point. <br>
+      Next, the two intermediate values are linearly interpolated into a final value proprtionally to their vertical distance from the sample (tx,ty) point. <br>
+      The result of this third lerp is what is returned as the texture sample.  
   </p>
 
+<p>
+  <b>Comparison:</b> Below we can see a comparison between both sampling methods using sampling rates of 1 and 16. <br>
+  The comparison is using the image of the campanille and has the pixel inspector focused on the face of the campanielle where there are many arches. 
+</p>
+      
+<div align="middle">
+  <table style="width=100%">
+    <tr>
+      <td>
+        <img src="images/task5_nearest_1.png" align="middle" width="400px"/>
+        <figcaption align="middle">Nearest Neighbor, Sampling Rate of 1</figcaption>
+      </td>
+      <td>
+        <img src="images/task5_nearest_16.png" align="middle" width="400px"/>
+        <figcaption align="middle">Nearest Neighbor, Sampling Rate of 16</figcaption>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <img src="images/task5_bilinear_1.png" align="middle" width="400px"/>
+        <figcaption align="middle">Bilinear, Sampling Rate of 1</figcaption>
+      </td>
+      <td>
+        <img src="images/task5_bilinear_16.png" align="middle" width="400px"/>
+        <figcaption align="middle">Bilinear, Sampling Rate of 16</figcaption>
+      </td>
+    </tr>
+  </table>
+</div>
+
+Two things can be clearly observed from the pixel inspector region. Firstly, notice how in the <i>nearest</i> case with sampling rate of 1 there are much larger jumps in color/intensity values across pixels. <br>
+In contrast, using the bilinear sampling method results in smoother and more gradual transitions in color across the pixels in the region. <br>
+Similarly, one can notice that the same is true for both methods as the sampling rate is increased from 1 to 16.
+      
 <h3 align="middle">Part 6: "Level sampling" with mipmaps for texture mapping</h3>
 
 
