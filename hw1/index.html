@@ -314,6 +314,9 @@ However, if the image is magnified or minified (i.e. the sampling rate in the im
         constant cost to computation and memory. Super-sampling if raised high enough will have the strongest anti-aliasing effect but will also incur the greatest computational costs. 
       </p>
 
+      <p>
+      Below is an example of fractal image under different combinations of level sampling and pixel sampling strategies. 
+        </p>
       <div align="middle">
   <table style="width=100%">
     <tr>
@@ -338,6 +341,10 @@ However, if the image is magnified or minified (i.e. the sampling rate in the im
     </tr>
   </table>
 </div>
+As may be observed, using the zero level and nearest pixel strategies results in a more aliased image. From zooming into the center with the pixel inspector zoomed in at the center we can see that there are much
+larger jumps in pixel intensities/colors. <br>
+Interestingly, at least for the center of the image, it appears that zero-level with bilinear pixel and nearest-level with nearest-pixel achieve the best tradeoff between anti-aliasing and maintaining key details in the pattern. <br>
+The nearest-level with bilinear pixel sampling strategy results in the smoothest transitions in the image but unfortunately washes out some of the detail in the center. 
 
 <h2 align="middle">Section III: Art Competition</h2>
 <p>If you are not participating in the optional art competition, don't worry about this section!</p>
