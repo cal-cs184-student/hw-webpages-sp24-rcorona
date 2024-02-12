@@ -259,7 +259,7 @@ Similarly, one can notice that the same is true for both methods as the sampling
 </p>
 <p>
 <b>Relative Differences:</b> The two methods differ mainly in terms of their efficiency and effectiveness. Nearest neighbor sampling is cheaper since only a single texel needs to be queried, as opposed to 4 in the bilinear sampling case which <br>
-  which additionally must incurr the cost of three lerp operations per pixel sample. If the sampling rate in the image is close to being in sync with the sampling rate in the texture (i.e. one pixel transition in the image also corresponds to one texel transition in the texture), <br>
+  additionally must incur the cost of three lerp operations per pixel sample. If the sampling rate in the image is close to being in sync with the sampling rate in the texture (i.e. one pixel transition in the image also corresponds to one texel transition in the texture), <br>
  then the nearest neighbor method is likely sufficient since there will be little aliasing. <br>
 However, if the image is magnified or minified (i.e. the sampling rate in the image is either larger or smaller than that of the texture), then there will be aliasing and/or sharp discontinuities in the intensity transitions between sampled values. <br>
   Because bilinear interpolation performs a weighted sum between the closest 4 texels proportional to their distance from the sample, this will alleviate problems in both magnification and in minification. <br>
