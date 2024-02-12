@@ -43,7 +43,7 @@
   </p>
   <p><br>
   <p><b>Helper Functions:</b></p>
-  <i>line_test</i>: This helper takes as input a pair of points ((x_0, y_0), (x_1, y_1)) defining a line and a third point (x,y ) to serve as a query. 
+  <i>line_test</i>: This helper takes as input a pair of points ((x_0, y_0), (x_1, y_1)) defining a line and a third point (x,y) to serve as a query. 
   It performs a line test by first defining two vectors: <br>V = (x - x0, y - y0), i.e. the vector from the first line point to the query point, and 
   <br>N = (-(y1 - y0), x1 - x0), i.e. a vector perpendicular to the line. 
   Having defined these two vectors, the function returns the result of their dot product, which will be positive
@@ -51,15 +51,15 @@
   </p>
   <p>
   <i>inside</i>: Given three triangle points and a query point, this helper function determines if the query lies in the triangle. 
-  As a first step, the function checks which direction denotes the inside of the triangle if we follow the vertexi winding order of P0 --> P1, P1 --> P2, and P2 --> P0. 
+  As a first step, the function checks which direction denotes the inside of the triangle if we follow the vertex winding order of P0 --> P1, P1 --> P2, and P2 --> P0. 
   The direction is determined by performing a line test using P0 and P1 as the two line points and P2 as the query point. 
   If the direction line test is positive, then points in the triangle will lie on the positive half-plane of each triangle edge (or, conversely, on the negative half-plane if the line test is negative). 
-  Therefore, a <i>direction</i> variable is set to +1 or -1 depending on the result of th direction line test. 
+  Therefore, a <i>direction</i> variable is set to +1 or -1 depending on the result of the direction line test. 
   Having determined the correct direction, the function then performs a line test for the query pixel on each edge (determined by each pair of triangle vertices) and multiplying it by the direction variable.
   If all line tests are >= 0 then that means the point lies on the correct side of each edge and the function returns True (and otherwise returnes False). 
   </p>
   <p>
-  <b>High-level overview: </b> First, the algorithm determines the bounding box of the triangle by finding the maximum and minimum x and y coordinates in \{x0, x1, x2\} and \{y0, y1, y2\}. 
+  <b>High-level algorithm overview: </b> First, the algorithm determines the bounding box of the triangle by finding the maximum and minimum x and y coordinates in {x0, x1, x2} and {y0, y1, y2}. 
   Having determined the bounding box, a nested for loop (one for x and one for y coordinates) from the minimum (integer) x,y to the maximum in increments of 1 is traversed. 
   For each pair of (x,y) query points in the loop, the algorithm performs an <i>inside</i> test on the sample point (x + 0.5, y + 0.5) to determine if the point lies in the triangle or not.  
   If the sample point lies within the triangle then the pixel (x,y) is filled. 
@@ -198,12 +198,12 @@ Additionally, here is an image of a full color gradient wheel rasterized using b
   <p>
 <b>Pixel Sampling Definition:</b> Pixel sampling from textures is the process through which color samples from an image, known as the texture, are mapped to screen space during the rasterization process. <br>
   To do this, a bijective function is defined which maps from coordinates in screen space (or coordinates in a mesh) to coordinates within the texture image (referred to as the (u,v) coordinates of the point). <br>
-  The rate of change of this mapping function need not be constant, i.e. du/dx, du/dy, dv/dx, and dv/dy are not necessarily across screen space. <br>
-    Coordinates (u,v) lie in the continuous range [0,1], and thus when converting to discrete texel coordinates in the texture image, they must be scaled by the width and height of the texture image and then discretized int an integer coordinate. 
+  The rate of change of this mapping function need not be constant, i.e. du/dx, du/dy, dv/dx, and dv/dy are not necessarily constant across screen space. <br>
+    Coordinates (u,v) lie in the continuous range [0,1], and thus when converting to discrete texel coordinates in the texture image, they must be scaled by the width and height of the texture image and then discretized into an integer coordinate. 
   </p>
 <p>
-  <b>Implementation: The rasterization algorithm is nearly identical to the prior two triangle rasterization methods, differing only in what is done one a sample point is determined to be inside the triangle. <br>
-    If a point is inside the triangle, I first compute the barycentric coordinates for that point, and use the barycentri coordinate weights to compute the sample points (u,v) coordinates as a weighted sum of the (u,v) coordinates of each triangel vertex. <br>
+  <b>Implementation: The rasterization algorithm is nearly identical to the prior two triangle rasterization methods, differing only in what is done once a sample point is determined to be inside the triangle. <br>
+    If a point is inside the triangle, I first compute the barycentric coordinates for that point, and use the barycentric coordinate weights to compute the sample point's (u,v) coordinates as a weighted sum of the (u,v) coordinates of the triangle vertices. <br>
     Having computed the sample point's (u,v) coordinates, the algorithm then samples a color value using one of the two sampling methods described below. 
 </p>
   <p>
@@ -216,7 +216,7 @@ Additionally, here is an image of a full color gradient wheel rasterized using b
     then the nearest discrete texel coordinate for a continuous (tx,ty) is going to be the floor of each of those two values, i.e. (floor(tx), floor(ty)). 
   </p>
   <p>
-    <i>Bilinear Sampling<:i/> Bilinear sampling computes the returned texture sample as the weighted average of the four nearest texels to a given (tx,ty) coordinate (with the weights being proportional to the distance) from it. <br>
+    <i>Bilinear Sampling:<i/> Bilinear sampling computes the returned texture sample as the weighted average of the four nearest texels to a given (tx,ty) coordinate (with the weights being proportional to the distance) from it. <br>
       The appropriate interpolation can be performed by a sequence of three lerp (linear interpolation) operations. <br>
       First, the two texels in each row (where each row contains two of the four nearest texels to the sample point) are linearly interpolated into intermediate color values proportionally to their horizontal distance from the sample (tx,ty) point. <br>
       Next, the two intermediate values are linearly interpolated into a final value proprtionally to their vertical distance from the sample (tx,ty) point. <br>
