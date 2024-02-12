@@ -216,7 +216,7 @@ Additionally, here is an image of a full color gradient wheel rasterized using b
     then the nearest discrete texel coordinate for a continuous (tx,ty) is going to be the floor of each of those two values, i.e. (floor(tx), floor(ty)). 
   </p>
   <p>
-    <i>Bilinear Sampling:<i/> Bilinear sampling computes the returned texture sample as the weighted average of the four nearest texels to a given (tx,ty) coordinate (with the weights being proportional to the distance from it). <br>
+    <i>Bilinear Sampling:</i> Bilinear sampling computes the returned texture sample as the weighted average of the four nearest texels to a given (tx,ty) coordinate (with the weights being proportional to the distance from it). <br>
       The appropriate interpolation can be performed by a sequence of three lerp (linear interpolation) operations. <br>
       First, the two texels in each row (where each row contains two of the four nearest texels to the sample point) are linearly interpolated into intermediate color values proportionally to their horizontal distance from the sample (tx,ty) point. <br>
       Next, the two intermediate values are linearly interpolated into a final value proprtionally to their vertical distance from the sample (tx,ty) point. <br>
