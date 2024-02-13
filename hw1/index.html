@@ -312,6 +312,12 @@ However, if the image is magnified or minified (i.e. the sampling rate in the im
   Because bilinear interpolation performs a weighted sum between the closest 4 texels proportional to their distance from the sample, this will alleviate problems in both magnification and in minification. <br>
   For magnification it will allow for a smooth transition between texel samples, avoiding sharp changes, and in the minification case it will reduce aliasing since it effectively doubles the sampling frequency in the texture. 
 </p>
+  <p>
+    <b>Difficulty:</b> The main difficulty that I had in this implementation was resolving a conceptual misunderstanding that I had. I had thought that to compute the variables <i>t</i> and <i>s</i> for the bilinear interpolation method
+    one could just directly subtract the uv coordinates of the pixel sample from the uv coordinates of the next texel. However, this was a misunderstanding because uv coordinates lie in the space [0,1] and therefore taking the difference
+    between uv coordinates does not yield a valid proportion weight (it instead yields a usually tiny value close to 0, leading to bilinear interpolation giving the same result as nearest neighbor). 
+    To resolve this, I had to scale the difference by the width/height of the texture image in order to get a valid proportion. 
+   </p>
 <h3 align="middle">Part 6: "Level sampling" with mipmaps for texture mapping</h3>
 
 <p>
