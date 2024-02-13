@@ -402,7 +402,7 @@ Interestingly, at least for the center of the image, it appears that zero-level 
 The nearest-level with bilinear pixel sampling strategy results in the smoothest transitions in the image but unfortunately washes out some of the detail in the center. 
 
 <p>
-<b>Difficult Part:</b> I kept having issues with segfaults due to getting an invalid level value that would either be a negative integer index. I realized that for derivative vectors with norms lower than 1.0 the log of D would yield a
+<b>Difficult Part:</b> I kept having issues with segfaults due to getting an invalid level value that would be a negative integer index. I realized that for derivative vectors with norms lower than 1.0 the log of D would yield a
   negative level L. In order to fix this, I implemented clipping, where L was set to 0 if the max of the norm of the derivative vectors was less than 1.0. Additionally, as a debugging step, I implemented level color mapping by setting
   the color of each pixel to L/max(L) to visualize which levels each pixel was getting mapped to (for example, I've included an image of the campanille levels below): 
 
