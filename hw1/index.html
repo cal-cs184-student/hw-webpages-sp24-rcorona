@@ -125,6 +125,12 @@
     Lastly, the <i>rasterize_triangle</i> and <i>resolve_to_frame_buffer</i> methods were modified as described above. 
   </p>
   <p>
+    <b>How did you anti-alias your triangles using super sampling?:</b> As noted above, super sampling increases the effective sampling rate of the rasterizes, 
+    which in turn yields a higher Nyquist frequency that can be represented by the rasterizer. 
+    For example, for corners of triangles, having a higher sampling rate means that for pixels with only a small proportion being part of a triangle (the rest background), 
+    there will now be a higher chance that some of the samples will hit the triangle, therefore yielding a closer approximation of the true triangle proportion within the pixel. 
+  </p>
+  <p>
   Below is a side-by-side comparison of sample rates of 1, 4, and 16 with the pixel inspecto zoomed over the left corner of the red triangle in <i>basic/test4.svg</i>.<br>
 
   </p>
