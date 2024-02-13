@@ -401,6 +401,22 @@ larger jumps in pixel intensities/colors. <br>
 Interestingly, at least for the center of the image, it appears that zero-level with bilinear pixel and nearest-level with nearest-pixel achieve the best tradeoff between anti-aliasing and maintaining key details in the pattern. <br>
 The nearest-level with bilinear pixel sampling strategy results in the smoothest transitions in the image but unfortunately washes out some of the detail in the center. 
 
+<p>
+<b>Difficulty:</b> I kept having issues with segfaults due to getting an invalid level value that would either be a negative integer index. I realized that for derivative vectors with norms lower than 1.0 the log of D would yield a
+  negative level L. In order to fix this, I implemented clipping, where L was set to 0 if the max of the norm of the derivative vectors was less than 1.0. Additionally, as a debugging step, I implemented level color mapping by setting
+  the color of each pixel to L/max(L) to visualize which levels each pixel was getting mapped to (for example, I've included an image of the campanille levels below): 
+
+</p>
+
+ <table style="width=100%">
+    <tr>
+      <td>
+        <img src="images/task6_zero_nearest.png" align="middle" width="400px"/>
+        <figcaption align="middle">Zero Level, Nearest Pixel</figcaption>
+      </td>
+    </tr>
+  </table>
+  
 <h2 align="middle">Section III: Art Competition</h2>
 <p>If you are not participating in the optional art competition, don't worry about this section!</p>
 
