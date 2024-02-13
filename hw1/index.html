@@ -38,8 +38,17 @@
 3. Triangles sampled from texture images, using (u,v) coordinates. 
 </p>
 <p>
-  
+  In order to do this we had to implement line tests to check for sample point membership within triangles, we also had to compute barycentric coordinates to perform interpolation. <br>
+  Lastly, we also implemented different sampling strategies:<br>
+  1. Super-sampling for scaling the number of samples per pixel in the image. <br>
+  2. Pixel-sampling in textures, implementing the nearest neighbor method and the bilinear interpolation method. <br>
+  3. Mipmap level sampling, where we can dynamically change the sampling rate within the texture image per pixel in the rasterized image. 
 </p>
+  <p>
+  What was most interesting to me was learning about the geometry behind line tests and barycentric coordinates. <br>
+    For line tests, it was interesting to see how the winding order for vertices can impact the sign of the line test dot product for points in the triangle. <br>
+  For barycentric coordinates, it was interesting to see how the coordinates are proportional to both the ratio of projections onto the line from each vertex to the opposit edge, as well as to the ratios between areas of the three triangles a query point will make with the triangle vertices. <br>
+  </p>
 
 <h2 align="middle">Section I: Rasterization</h2>
 
