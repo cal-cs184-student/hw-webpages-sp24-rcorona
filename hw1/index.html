@@ -131,6 +131,13 @@
     there will now be a higher chance that some of the samples will hit the triangle, therefore yielding a closer approximation of the true triangle proportion within the pixel. 
   </p>
   <p>
+    <b>Difficulty</b>: I had the most difficulty dealing with indexing into the sample buffer to average samples for each pixel during the frame buffer resolution stage. <br>
+    This is because the samples pertaining to a single pixel will involve multiple rows and multiple columns within the sample buffer. <br>
+    I resloved this with paper and pencil and reasoning out how to first get the top-left sample coordinate and then double loop from there. <br> 
+    Interestingly, I also found an edge case where I was getting the incorrect sample indexes because I was casting indeces to ints <i>after</i> scaling by the sample rate, 
+    which was causing indexes higher up in the image to yield the wrong sample. This was resolved by casting everything to ints before any sort of multiplication took place. 
+  </p>
+  <p>
   Below is a side-by-side comparison of sample rates of 1, 4, and 16 with the pixel inspecto zoomed over the left corner of the red triangle in <i>basic/test4.svg</i>.<br>
 
   </p>
