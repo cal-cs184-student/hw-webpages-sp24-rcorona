@@ -270,13 +270,13 @@ However, if the image is magnified or minified (i.e. the sampling rate in the im
 <p>
   <b>Level Sampling Discussion:</b> To avoid aliasing in the rasterized image, the sampling rate in the image is ideally in sync with the sampling rate in the texture, i.e. moving one pixel in the image corresponds to one texel move in the texture. <br>
   Unfortunately, the rate of change of pixels to texels is not always one, and also may dynamically vary across the image, in some places being higher or lower than 1. <br>
-  Level sampling combats this problem by precomputing an image pyramid (in this case known as a mipmap) of varying downsampled resolutions of the texture. <br>
+  Level sampling combats the case when the rate of change is higher than 1 by precomputing an image pyramid (in this case known as a mipmap) of varying downsampled resolutions of the texture. <br>
   Precomputing the downsamples effectively lowers the frequency of each image in the mipmap by a rate of 1/2, where a level x pertains to a rate of change of 2^x in terms of how many texels are traversed per pixel change <br>
   (e.g. if every pixel change pertains to two texels, then the ideal mipmap level is log(2) == 1). <br>
   By precomputing the downsampled textures and then dynamically selecting texel samples per pixel based on the current rate of change in the image allows for anti-aliasing in the rasterized image.
 </p>
   <p>
-    <b>Implementation:</b> For our implementation, the mipmap was already precomputed, so only implementation of dynamic level selection was required. <br>
+    <b>Implementation:</b> For the implementation, the mipmap was already precomputed, so only the implementation of dynamic level selection was required. <br>
     To compute the level for a given pixel, the uv coordinates of that pixel as well as the pixel to the right and the pixel below are computed (these pixels are pixels in the image <i>before</i> super sampling, ie. (x + sqrt_sample_rate, y + sqrt_sample_rate). <br>
     These values are computed within <i>rasterize_textured_triangle</i> and used to populate a <i>SampleParams</i> struct.
   </p>
@@ -300,17 +300,19 @@ However, if the image is magnified or minified (i.e. the sampling rate in the im
       <i>Speed:</i> For speed there is a base compute cost of O(W * H), since the number of operations will scale with the image size. <br>
         Similarly to memory, increasing the sampling rate scales the compute cost by S since all of the operations are repeated for all all sampled pixels, i.e O(S * W * H) <br>
         Level sampling adds a constant amount of compute cost to each sample's operations, since the number of operations needed per sample does not depend on the image nor on the texture dimensions. <br>
-        Bilinear level sampling adds an additional constant cost to computations that does not scale with image nor texture dimensions. 
+        Bilinear level sampling adds an additional constant cost to computations that does not scale with image nor texture dimensions (roughly, it doubles a subset of operations). 
         Therefore level sampling results in a cost of O(W * H + (W * H) O(1)) == O(W * H). <br>
-        Changing the pixel sampling strategy also adds a constant cost to the computation, with bilinear pixel sampling being more expensive than nearest neighbor but still adding a constant cost that does not scale with image nor texture dimensions.
+        Changing the pixel sampling strategy also adds a constant cost to the computation, with bilinear pixel sampling being more expensive than nearest neighbor (4x some subset of operations) but still scaling by a constant amount that does not depend on the image nor texture dimensions.
       </p>
       <p>
         <i>Anti-aliasing Power:</i> Increasing the sampling rate effectively doubles the sampling frequency in each axis, also doubling the Nyquist frequency and therefore doubling the maximum frequency that can be represented in the image before aliasing occurs. <br>
-        Level sampling dynamically selects a level of downsampling/averaging in the texture image per sampled image pixel, which effectively allows it to lower the frequency of the texture image by as much as a factor log_2(max_level).<br>
-        Bilinear pixel sampling effectively halfs the frequency of the texture image, which would be comparable to doubling the Nyquist frequency in the texture space. Nearest neighbor pixel sampling does not anti-alias. <br>
+        Level sampling dynamically selects a level of downsampling/averaging in the texture image per sampled image pixel, which effectively allows it to lower the frequency of the texture image by as much as a factor log_2(max_level). 
+        because the 0th level represents a sampling rate of 1, level sampling only helps treat alliasing resulting from texture sampling rates higher than 1, not lower (i.e. it helps with minification, not magnification).<br>
+        Bilinear pixel sampling allows for smooth transitions between texels, which I believe is particularly helpful for cases of magnification, where the sampling rate in the texture is less than 1 texel. 
+        Nearest neighbor pixel sampling does not anti-alias. <br>
       </p>
       <p>
-        <b>Overall assessment:</b> Overall it appears that mipmap level sampling likely has the best tradeoff between memory/compute costs and anti-aliasing power since it allows for dynamic texture frequency sampling while only adding a <br>
+        <b>Overall assessment:</b> Overall it appears that mipmap level sampling with bilinear pixel sampling likely has the best tradeoff between memory/compute costs and anti-aliasing power since it allows for dynamic texture frequency sampling while only adding a <br>
         constant cost to computation and memory. Super-sampling if raised high enough will have the strongest anti-aliasing effect but will also incur the greatest computational costs. 
       </p>
 
@@ -341,7 +343,7 @@ However, if the image is magnified or minified (i.e. the sampling rate in the im
     </tr>
   </table>
 </div>
-As may be observed, using the zero level and nearest pixel strategies results in a more aliased image. From zooming into the center with the pixel inspector zoomed in at the center we can see that there are much
+As may be observed, using the zero level and nearest pixel strategies results in a more aliased image. From zooming into the center with the pixel inspector, we can see that there are much
 larger jumps in pixel intensities/colors. <br>
 Interestingly, at least for the center of the image, it appears that zero-level with bilinear pixel and nearest-level with nearest-pixel achieve the best tradeoff between anti-aliasing and maintaining key details in the pattern. <br>
 The nearest-level with bilinear pixel sampling strategy results in the smoothest transitions in the image but unfortunately washes out some of the detail in the center. 
