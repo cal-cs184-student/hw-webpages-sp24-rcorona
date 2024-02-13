@@ -131,7 +131,7 @@
     there will now be a higher chance that some of the samples will hit the triangle, therefore yielding a closer approximation of the true triangle proportion within the pixel. 
   </p>
   <p>
-    <b>Difficulty</b>: I had the most difficulty dealing with indexing into the sample buffer to average samples for each pixel during the frame buffer resolution stage. <br>
+    <b>Difficult Part</b>: I had the most difficulty dealing with indexing into the sample buffer to average samples for each pixel during the frame buffer resolution stage. <br>
     This is because the samples pertaining to a single pixel will involve multiple rows and multiple columns within the sample buffer. <br>
     I resloved this with paper and pencil and reasoning out how to first get the top-left sample coordinate and then double loop from there. <br> 
     Interestingly, I also found an edge case where I was getting the incorrect sample indexes because I was casting indeces to ints <i>after</i> scaling by the sample rate, 
@@ -191,7 +191,7 @@ Lastly, the legs were colored blue and the arms were colored green.
 </div>
 
 <p>
-  <b>Difficulty: </b> I ended up having problems with rotations not actually being either 45 or 90 degrees, 
+  <b>Difficult Part: </b> I ended up having problems with rotations not actually being either 45 or 90 degrees, 
   which led me to realize that the input to the trigonometric functions within the rotation matrix needs to be in <i>radians</i>, not degrees. <br>
   This was resolved by first converting the inputted degree value into radians before being passed into the matrix constructor. 
 </p>
@@ -234,7 +234,7 @@ Additionally, here is an image of a full color gradient wheel rasterized using b
 </div>
 
 <p>
-  <b>Difficulty:</b> The biggest source of difficulty for me with this section was conceptually understanding why the proportion between the line tests yields each of the three barycentric coordinates. <br>
+  <b>Difficult Part:</b> The biggest source of difficulty for me with this section was conceptually understanding why the proportion between the line tests yields each of the three barycentric coordinates. <br>
   After some analysis with pen and paper I realized that expressing the dot products in the form |N||V|cos(theta) cancels out the |N| when dividing, leaving an expression that is equivalent to the projection of 
   each of the two points onto the normal line. Therefore, the division between the two line tests directly yields the proportion a query point has in proximity to a given triangle vertex. 
                                                                                                                                                                                                               
@@ -313,7 +313,7 @@ However, if the image is magnified or minified (i.e. the sampling rate in the im
   For magnification it will allow for a smooth transition between texel samples, avoiding sharp changes, and in the minification case it will reduce aliasing since it effectively doubles the sampling frequency in the texture. 
 </p>
   <p>
-    <b>Difficulty:</b> The main difficulty that I had in this implementation was resolving a conceptual misunderstanding that I had. I had thought that to compute the variables <i>t</i> and <i>s</i> for the bilinear interpolation method
+    <b>Difficult Part:</b> The main difficulty that I had in this implementation was resolving a conceptual misunderstanding that I had. I had thought that to compute the variables <i>t</i> and <i>s</i> for the bilinear interpolation method
     one could just directly subtract the uv coordinates of the pixel sample from the uv coordinates of the next texel. However, this was a misunderstanding because uv coordinates lie in the space [0,1] and therefore taking the difference
     between uv coordinates does not yield a valid proportion weight (it instead yields a usually tiny value close to 0, leading to bilinear interpolation giving the same result as nearest neighbor). 
     To resolve this, I had to scale the difference by the width/height of the texture image in order to get a valid proportion. 
@@ -402,7 +402,7 @@ Interestingly, at least for the center of the image, it appears that zero-level 
 The nearest-level with bilinear pixel sampling strategy results in the smoothest transitions in the image but unfortunately washes out some of the detail in the center. 
 
 <p>
-<b>Difficulty:</b> I kept having issues with segfaults due to getting an invalid level value that would either be a negative integer index. I realized that for derivative vectors with norms lower than 1.0 the log of D would yield a
+<b>Difficult Part:</b> I kept having issues with segfaults due to getting an invalid level value that would either be a negative integer index. I realized that for derivative vectors with norms lower than 1.0 the log of D would yield a
   negative level L. In order to fix this, I implemented clipping, where L was set to 0 if the max of the norm of the derivative vectors was less than 1.0. Additionally, as a debugging step, I implemented level color mapping by setting
   the color of each pixel to L/max(L) to visualize which levels each pixel was getting mapped to (for example, I've included an image of the campanille levels below): 
 
