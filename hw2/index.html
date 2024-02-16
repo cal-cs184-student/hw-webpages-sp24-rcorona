@@ -1,7 +1,54 @@
-<html>
-	<head>
-	</head>
-	<body>
-		Homework 2 index.html here
-	</body>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<style>
+  body {
+    padding: 100px;
+    width: 1000px;
+    margin: auto;
+    text-align: left;
+    font-weight: 300;
+    font-family: 'Open Sans', sans-serif;
+    color: #121212;
+  }
+  h1, h2, h3, h4 {
+    font-family: 'Source Sans Pro', sans-serif;
+  }
+</style>
+<title>CS 184/284A Geometric Modeling</title>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<link href="https://fonts.googleapis.com/css?family=Open+Sans|Source+Sans+Pro" rel="stylesheet">
+</head>
+
+
+<body>
+
+<h1 align="middle">CS 184/284A: Computer Graphics and Imaging, Spring 2024</h1>
+<h1 align="middle">Homework 2: Geometric Modeling</h1>
+<h2 align="middle">Rodolfo Corona Rodriguez (3034203306) </h2>
+<h2 align="middle">Website: https://cal-cs184-student.github.io/hw-webpages-sp24-rcorona/hw2/index.html </h2>
+
+<br><br>
+
+<h2 align="middle">Overview</h2>
+
+<h2 align="middle">Section I: Bezier Curves and Surfaces</h2>
+
+<h3 align="middle">Part 1: Bezier Curves with 1D de Casteljau Subdivision</h3>
+
+<p>
+<b>Casteljau's Algorithm Explanation:</b> Casteljau's algorithm is given a set of <i>n</i> vectors, known as <i>control points</i> and uses them to evaluate a degree-n <i>Bezier curve</i>.<br>
+This curve is parameterized by a parameter <i>t</i> in [0,1], and the curve is the result of evaluating the Bezier curve at points within the range [0,1]. <br><br>
+The algorithm can evaluate the location on the curve for a point t through n-1 recursive steps. At each level of the recursion, the algorithm is provided with a list of k intermediate control points (with the starting level being the original control points themselves). <br>
+For each contiguos pair of points (p1, p2) a new intermediate point is computed as (1-t) * p1 + t * p2, and the set of all k-1 intermediate points resulting from interpolating each pair is passed down to the next level of recursion. <br>
+The termination case of the recursion is when there is only one intermediate point provided, which will be precisely the point along the Bezier curve at coordinate t to be returned. 
+</p>
+<p>
+<b>Implementation:</b> I implemented the algorithm recursively. At each recursion level I define an std::vector&ltVector2D&gt which will contain the intermediate points at the next recursion level. <br>
+I then loop over pairs (points[i], points[i+1]) in a sliding window from i=0 to i=points.size() - 1. <br>
+Each pair is interpolated into intermediate point p = (1-t) * p1 + t * p2, which is pushed onto the vector of intermediate points. <br>
+At the termination of the loop, the vector of intermediate points is returned. 
+</p>
+
+</body>
 </html>
