@@ -42,7 +42,7 @@ This curve is parameterized by a parameter <i>t</i> in [0,1], and the curve is t
 The algorithm can evaluate the location on the curve for a point t through n-1 recursive steps. At each level of the recursion, the algorithm is provided with a list of k intermediate control points (with the starting level being the original control points themselves). <br>
 For each contiguos pair of points (p1, p2) a new intermediate point is computed as (1-t) * p1 + t * p2, and the set of all k-1 intermediate points resulting from interpolating each pair is passed down to the next level of recursion. <br>
 The termination case of the recursion is when there is only one intermediate point provided, which will be precisely the point along the Bezier curve at coordinate t to be returned. 
-</p>
+</p><br>
 <p>
 <b>Implementation:</b> I implemented the algorithm recursively. At each recursion level I define an std::vector&ltVector2D&gt which will contain the intermediate points at the next recursion level. <br>
 I then loop over pairs (points[i], points[i+1]) in a sliding window from i=0 to i=points.size() - 1. <br>
@@ -50,5 +50,20 @@ Each pair is interpolated into intermediate point p = (1-t) * p1 + t * p2, which
 At the termination of the loop, the vector of intermediate points is returned. 
 </p>
 
+<p>
+<b>Results:</b> Below I visualize results for the algorithm: 
+</p>
+  
+<div align="middle">
+  <table style="width=100%">
+    <tr>
+      <td>
+        <img src="images/task1_img.png" align="middle" width="400px"/>
+        <figcaption align="middle">Render of <i>basic/test4.svg</i> with the pixel inspector zoomed into the left corner of the red triangle.</figcaption>
+      </td>
+    </tr>
+  </table>
+</div>
+  
 </body>
 </html>
