@@ -113,7 +113,13 @@ At the termination of the loop, the vector of intermediate points is returned.
 <b>Implementation:</b> <br>
 <i>evaluate_step:</i> This method is identical to its 2D counterpart for Part 1, which is described above. The only difference is that the operations are all now on Vector3D objects instead of Vector2D. 
   <br>
-<i>evaluate_1D:</i> This method ...
+<i>evaluate_1D:</i> Given the input control points, this method begins by defining a std::vector&lbVector3D&rb which is used as a buffer to contain intermediate points to interpolate at each level of the de Casterljau algorithm recursion. <br>
+  The method then performs a while loop which recurses into <i>evaluate_step</i> using the intermediate control points until the size of the vector returned by the recursion is 1 (at which point we have the evaluated point on the Bezier curve), <br>
+  at which point the singular Vector3D containing the evaluated point is returned. <br>
+  <br>
+  <i>evaluate:</i> This method first creates a std::vector&lbVector3D&rb which it fills with the evaluated points at coordinate u within each of the Bezier curves defined by the rows of the control points by calling <i>evaluate_1D</i>. <br>
+  This vector, containing the evaluated u points, is then passed as input as the control point vector to <i>evaluate_1D</i> with the parameter v in order to yield the final evaluated point at coordinate (u,v) on the Bezier surface. <br>
+  This point is returned. 
 </p>
 </body>
 </html>
