@@ -140,5 +140,28 @@ Below we can see a couple of screenshots of the Bezier surface evaluated from <i
     </tr>
 </div>
 
+<h2 align="middle">Section II: Triangle Meshes and Half-Edge Data Structure</h2>
+
+<h2 align="middle">Part III: Area-Weighted Vertex Normals</h2>
+
+<p>
+<b>Implementation:</b><br> For my implementation, I first define a <i>normals</i> vector&lt;Vector3D&gt; and a <i>areas </i>vector&lt;float&gt; for collecting the surface normals and areas, respectively, 
+  of all triangle faces in the fan around the given vertex. <br>
+  Next, I iterate over all faces around the vertex by starting with the half-edge, <i>h</i>, the vertex points to and updating it as <i>h = h-%gt;twin()-&gt;next()</i> in each iteration. 
+  For each iteration, I retrive the face associated with the current half-edge, <i>f = h-&gt;face()</i> and <b>check if the face lies on the boundary or not</b>. 
+  If the face does not lie within the boundary, then I compute its area and add both its area and normal to the <i>areas</i> and <i>normals</i> vectors. <br><br>
+
+  To compute the area of a given face, I define a helper function, <i>float Face::area</i>, which first collects all 3 of the face's vertices (v0, v1, and v2) in a vector by iterating through
+  with the half-edge <i>next()</i> method. Having collected all three vertices, the area is simply half of the area of the trapezoid defined by the vector cross product between 
+  the vectors v0-->v1 and v0-->v2, i.e. 1/2 * |cross(v1 - v0, v2 - v0).norm()|. <br><br>
+
+  Having collected all areas and normals pertaining to the faces in the fan around the vertices, I then compute the weighted normal as follows: 
+  First, I loop over and sum all areas into a variable <i>areas_total</i>.
+  Next, I define a Vector3D named <i>weighted_normal</i> which will contain the final weighted normal, and set its value as the sum of <i>areas[i] / areas_total * normals[i]</i> by iterating 
+  over all areas/normals. <br>
+  After performing the weighted sum, <i>weighted_normal</i> is returned. 
+  
+</p>
+  
 </body>
 </html>
