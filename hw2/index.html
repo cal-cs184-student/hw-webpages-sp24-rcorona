@@ -190,6 +190,34 @@ As may be clearly seen, both are smoother after the shading is turned on.
       </td>
     </tr>
 </div>
+
+<h2 align="middle">Part IV: Edge Flip</h2>
+
+<p>
+<b>Implementation:</b> In my implementation I first chck to see if the given edge is on the boundary, if so I simply return it. 
+  If it is not on the boundary, then I first assign all 4 remaining edges across both triangles to variables <i>e1, e2, e3,</i> and <i>e4</i> by traversing half-edges and twins as needed. 
+  Similarly, I collect all six half edges associated with the two triangles, as well as the four vertices and two faces. <br><br>
+  Next, I continue by assigning pointers to each variable, starting with vertices, then faces, then edges, and finally half-edges. 
+</p>
+
+<p>
+  <b>Debugging Journey:</b> During development of the method, I first began by trying to only assign pointers that I thought were necessary (contrary to the suggestion in the project spec!). <br>
+  I also found that there were certain symmetries in assignments between half-edges, which led me to try implementing a helper method which I would call once per triangle. 
+Unfortunately, yet unsurprisignly, I found that there were certain corner cases in which a hole would be formed in the mesh as a result of the flip operation. <br>
+Before diving into debugging, I found that I was able to get the method working by switching strategies and making sure that I was assigning every component pertaining to the two triangles first. <br>
+Below I have included an image of a schematic I drew in order to reason about pointer assignments in the data structure. I found that by following the schematic I was able to get a working implementation. <br>
+  In the end, I found that a thorough and explicit solution was easier to get correct than to try to express it more elegantly by trying to leverage symmetry in assignments. 
+</p>
+
+<div align="middle">
+  <table style="width=100%">
+    <tr>
+      <td>
+        <img src="images/task4_schema.jpeg" align="middle" width="400px"/>
+        <figcaption align="middle">Schematic drawings that I used to reason about data pointer assignments.</figcaption>
+      </td>
+    </tr>
+</div>
   
 </body>
 </html>
