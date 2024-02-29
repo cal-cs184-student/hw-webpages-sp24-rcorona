@@ -351,6 +351,68 @@ I next flip any edge that connects an old and new vertex. This is done by loopin
     At this point, since all of the new positions have already been copied into the <i>newPosition</i> variable of every vertex (both new and old vertices), I simply loop over all of them 
     and copy the new position into the vertice's <i>position</i> variable.
   </p>
+
+<p>
+  <b>Notes on Rounding Effect on Corners and Edges:</b> Because upsampling updates the position of vertices as a weighted average of itself and its neighbors, 
+  this essentially has the effect of pulling vertices towards the "center of mass" of its local neighborhoods. 
+  Therefore, because corners are always extruding in some direction, the averaging effect will cause them to come closer to the body of the mesh which will result in a rounding effect on them. 
+  This effect may be observed in the progression of the torus mesh upsampling below: 
+</p>
+
+  <div align="middle">
+  <table style="width=100%">
+    <tr>
+      <td>
+        <img src="images/task6_t_before_1.png" align="middle" width="400px"/>
+        <figcaption align="middle">Original torus.</figcaption>
+      </td>
+      <td>
+        <img src="images/task6_t_before_2.png" align="middle" width="400px"/>
+        <figcaption align="middle">One level of upsampling.</figcaption>
+      </td>
+    </tr>
+  
+    <tr>
+      <td>
+        <img src="images/task6_t_before_3.png" align="middle" width="400px"/>
+        <figcaption align="middle">Two levels of upsampling.</figcaption>
+      </td>
+      <td>
+        <img src="images/task6_t_before_4.png" align="middle" width="400px"/>
+        <figcaption align="middle">Three levels of upsampling.</figcaption>
+      </td>
+    </tr>
+</div>
+
+<p>
+  <b>Combating Rounding Effect:</b> Due to the averaging effect described above, one way in which we can combat the rounding effect is by pre-modifying the mesh such that the center of mass of a corner's/edge's local neighborhood is 
+  closer to its vertices. For example, 
+</p>
+
+  <div align="middle">
+  <table style="width=100%">
+    <tr>
+      <td>
+        <img src="images/task6_t_after_1.png" align="middle" width="400px"/>
+        <figcaption align="middle">Original torus.</figcaption>
+      </td>
+      <td>
+        <img src="images/task6_t_after_2.png" align="middle" width="400px"/>
+        <figcaption align="middle">One level of upsampling.</figcaption>
+      </td>
+    </tr>
+  
+    <tr>
+      <td>
+        <img src="images/task6_t_after_3.png" align="middle" width="400px"/>
+        <figcaption align="middle">Two levels of upsampling.</figcaption>
+      </td>
+      <td>
+        <img src="images/task6_t_after_4.png" align="middle" width="400px"/>
+        <figcaption align="middle">Three levels of upsampling.</figcaption>
+      </td>
+    </tr>
+</div>
   
 </body>
 </html>
