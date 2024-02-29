@@ -386,7 +386,9 @@ I next flip any edge that connects an old and new vertex. This is done by loopin
 
 <p>
   <b>Combating Rounding Effect:</b> Due to the averaging effect described above, one way in which we can combat the rounding effect is by pre-modifying the mesh such that the center of mass of a corner's/edge's local neighborhood is 
-  closer to its vertices. For example, 
+  closer to its vertices. For example, if we pre-split the edges of the torus such that there is now a new vertex at the center of each of its sides, we will now have a center of mass for each corner's local neighborhood that is closer
+  to the corner itself. This allows the torus to better retain its original shape as we can see below, where after upsampling the torus has much mor distinctly flat regions and the original corners may be seen much more clearly 
+  (although they are still somewhat rounded). 
 </p>
 
   <div align="middle">
