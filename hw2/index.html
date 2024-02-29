@@ -32,6 +32,31 @@
 
 <h2 align="middle">Overview</h2>
 
+In this homework we implemented:<br>
+1. de Casteljau's algorithm for evaluating Bezier curves and surfaces. This algorithm was first implemented to evaluate a single point on a single Bezier curve. 
+  The single point algorithm was then used as a building block to be able to evaluate sets of points, which directly leads into evaluating points on Bezier surfaces
+  by evaluating n sets of points using a coordinate u and then using the set of results to evaluate the coordinate v, yielding the evaluated point at coordinate (u,v) on the surface. <br><br>
+
+  2. Area weighted vertex normals, which required computing the normals for vertices on a mesh as a weighted sum of the normals on the fan of faces around it, with normal weights being 
+  proportional to the area of each face on the fan. <br><br>
+  
+ 3. Edge flipping and splitting, followed by mesh upsampling by loop subdivision. 
+  Edge flipping and splitting required reassigning pointers in the mesh data structure in order to accomodate new edge structure (and new elements in the case of splitting). 
+  Mesh upsampling then builds on these two operations by splitting every edge on the mesh and re-positioning every vertex on the new mesh as a weighted sum of the locations
+  of each vertice's local neighborhood. <br><br>
+
+  From the first section, I particularly enjoyed learning how Bezier surfaces could be evaluated as a simple extension of the 1D Bezier curve case, by simply using the 1D case 
+  as a helper function. <br><br>
+
+  In the second part, I found myself getting stuck mainly on the edge-flipping operation, since I was convinced that I could keep track of everything in my head. 
+  I was positively surprised to find how much easier edge flipping and splitting became to implement once I decided to exhaustively assign pointers by following 
+  a drawn schematic. <br><br>
+
+  Lastly, I thought the mesh upsampling section was very instructive through its focus on studying rounding in meshes as well as lopsidedness caused by the upsampling operation. 
+  Because meshes are defined as sets of triangles, the data structure can lead to asymmetries in the representation of certain shapes such as cubes, which leads to lopsided upsampling. 
+  It appears that careful consideration must be taken in preprocessing meshes prior to upsampling in order to maintain certain symmetries, flat areas, or corners from the original shape in 
+  the upsampled result. 
+  
 <h2 align="middle">Section I: Bezier Curves and Surfaces</h2>
 
 <h3 align="middle">Part 1: Bezier Curves with 1D de Casteljau Subdivision</h3>
