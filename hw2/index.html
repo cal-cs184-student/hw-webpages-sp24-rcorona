@@ -146,7 +146,7 @@ Below we can see a couple of screenshots of the Bezier surface evaluated from <i
 <h3 align="middle">Part III: Area-Weighted Vertex Normals</h2>
 
 <p>
-<b>Implementation:</b><br> For my implementation, I first define a <i>normals</i> vector&lt;Vector3D&gt; and a <i>areas </i>vector&lt;float&gt; for collecting the surface normals and areas, respectively, 
+<b>Implementation:</b><br> For my implementation, I first define a <i>normals</i> vector&lt;Vector3D&gt; and an <i>areas </i>vector&lt;float&gt; for collecting the surface normals and areas, respectively, 
   of all triangle faces in the fan around the given vertex. <br>
   Next, I iterate over all faces around the vertex by starting with the half-edge, <i>h</i>, the vertex points to and updating it as <i>h = h-%gt;twin()-&gt;next()</i> in each iteration. 
   For each iteration, I retrive the face associated with the current half-edge, <i>f = h-&gt;face()</i> and <b>check if the face lies on the boundary or not</b>. 
