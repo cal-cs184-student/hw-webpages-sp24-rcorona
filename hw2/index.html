@@ -367,7 +367,7 @@ I next split all edges in the original mesh. In order to do this without looping
     <p>
 I next flip any edge that connects an old and new vertex. This is done by looping over all edges in the mesh and first checking if they are new. 
       If the edge is new, then I get both vertices associated with the edge (using the edge's half-edge and its twin). 
-      Next, I check if either the first vertex is old and the second is now or if the first vertex is new and the second old. If either condition is true, then I flip the edge. 
+      Next, I check if either (1) the first vertex is old and the second is new or (2) if the first vertex is new and the second old. If either condition is true, then I flip the edge. 
     </p>
 
   <p>
