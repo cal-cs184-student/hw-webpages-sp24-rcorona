@@ -353,6 +353,13 @@ I next flip any edge that connects an old and new vertex. This is done by loopin
   </p>
 
 <p>
+  <b>Debugging:</b> The only problem I ran into during development of the method was an infinite loop that popped up when performing edge splitting. 
+  I realized that was caused by the addition of edges into the mesh during splitting, which was causing the loop to never finish. 
+  Therefore, in order to fix this I gathered all pre-existing edges into a vector prior to splitting and then iterated over that vector in order to only split
+  a finite number of edges. 
+</p>  
+  
+<p>
   <b>Notes on Rounding Effect on Corners and Edges:</b> Because upsampling updates the position of vertices as a weighted average of itself and its neighbors, 
   this essentially has the effect of pulling vertices towards the "center of mass" of its local neighborhoods. 
   Therefore, because corners are always extruding in some direction, the averaging effect will cause them to come closer to the body of the mesh which will result in a rounding effect on them. 
