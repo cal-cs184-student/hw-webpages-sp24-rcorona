@@ -155,7 +155,8 @@ Below we can see a couple of screenshots of the Bezier surface evaluated from <i
 
   To compute the area of a given face, I define a helper function, <i>float Face::area</i>, which first collects all 3 of the face's vertices (v0, v1, and v2) in a vector by iterating through
   with the half-edge <i>next()</i> method. Having collected all three vertices, the area is simply half of the area of the trapezoid defined by the vector cross product between 
-  the vectors v0-->v1 and v0-->v2, i.e. 1/2 * |cross(v1 - v0, v2 - v0).norm()|. <br><br>
+  the vectors v0-->v1 and v0-->v2, i.e. <br>
+  1/2 * |cross(v1 - v0, v2 - v0).norm()|. <br><br>
 
   Having collected all areas and normals pertaining to the faces in the fan around the vertices, I then compute the weighted normal as follows: 
   First, I loop over and sum all areas into a variable <i>areas_total</i>.
