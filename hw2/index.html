@@ -351,7 +351,7 @@ Below I have included an image of a schematic I drew in order to reason about po
 
 <p>
   <b>Implementation:</b> As a first step I compute the new positions for all original vertices in the mesh using the loop subdivision rule. 
-  This is done by iterating over all vertices in the mesh (using <i>mesh.verticesBegin()</i> and <i>mesh.verticesEnd()</i> in a loop. 
+  This is done by iterating over all vertices in the mesh (using <i>mesh.verticesBegin()</i> and <i>mesh.verticesEnd()</i>) in a loop. 
   In each iteration of the loop I mark each vertex as not being new by setting <i>isNew</i> to false.
   Following this, I collect all neighboring vertices into a std::vector&lt;VertexIter&gt; in a loop by starting with the vertice's half-edge <i>h</i> and updating it as <i>h = h-&gt;twin()-&gt;next()</i>. 
   I next compute <i>u</i> as 3.0/16.0 if the vertice's degree is 3, otherwise I set if to 3.0 / (8.0 * degree). 
