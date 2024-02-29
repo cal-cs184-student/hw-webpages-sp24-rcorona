@@ -440,6 +440,17 @@ I next flip any edge that connects an old and new vertex. This is done by loopin
     </tr>
 </div>
 
+Notice in the top-left image that the edges of the cube are not symmetric. 
+  Take the vertex at the top right of the cube as an example. Of the three sides of the cube that it resides in, 
+  we can notice that it is connected to all other vertices on two of the sides, but on one side it is missing a connection 
+  to the vertex diagonal from it. 
+  This asymmetry in its neighborhood is going to cause its updated position during upsampling to be biased towards the sides it has more connections in, which 
+  will result in the observed lopsidedness across the cube. <br><br>
+
+  In contrast, below are images of a cube which has had its edges split such that all vertices are fully connected within each side of of the cube 
+  (i.e. every side of the cube has an X formed on it from its edges). All local neighborhoods across vertices are now symmetrical after this 
+  preprocessing, which will result in symmetric upsampling as shown below. 
+  
 </p>
   <div align="middle">
   <table style="width=100%">
