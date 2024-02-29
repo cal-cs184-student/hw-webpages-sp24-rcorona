@@ -199,12 +199,16 @@ As may be clearly seen, both are smoother after the shading is turned on.
 <h3 align="middle">Part IV: Edge Flip</h2>
 
 <p>
-<b>Implementation:</b> In my implementation I first chck to see if the given edge is on the boundary, if so I simply return it. 
+<b>Implementation:</b> In my implementation I first check to see if the given edge is on the boundary, if so I simply return it. 
   If it is not on the boundary, then I first assign all 4 remaining edges across both triangles to variables <i>e1, e2, e3,</i> and <i>e4</i> by traversing half-edges and twins as needed. 
   Similarly, I collect all six half edges associated with the two triangles, as well as the four vertices and two faces. <br><br>
-  Next, I continue by assigning pointers to each variable, starting with vertices, then faces, then edges, and finally half-edges. 
+  Next, I continue by assigning pointers to each variable, starting with vertices, then faces, then edges, and finally half-edges.  
 </p>
-
+<p>
+<b>Symmetries:</b> I noticed a couple of symmetries in assignments. First, each of the half-edges in the flipped edge will have their new next half-edge be the next-next half-edge of its twin. 
+  Second, the next-next half edge for each half-edge on the flipped edge will have its face swapped, while the other half-edges will maintain the same face. 
+</p>
+  
 <p>
 <b>Results:</b> Below we can see a progression of the teapot mesh before and throughout a number of edge flips.  
 <div align="middle">
@@ -235,11 +239,12 @@ As may be clearly seen, both are smoother after the shading is turned on.
   
 <p>
   <b>Debugging Journey:</b> During development of the method, I first began by trying to only assign pointers that I thought were necessary (contrary to the suggestion in the project spec!). <br>
-  I also found that there were certain symmetries in assignments between half-edges, which led me to try implementing a helper method which I would call once per triangle. 
+  I also found that there were certain symmetries in assignments between half-edges, as noted above, which led me to try implementing a helper method which I would call once per triangle in 
+  order to make the code more succinct. 
 Unfortunately, yet unsurprisignly, I found that there were certain corner cases in which a hole would be formed in the mesh as a result of the flip operation. <br>
-Before diving into debugging, I found that I was able to get the method working by switching strategies and making sure that I was assigning every component pertaining to the two triangles first. <br>
+Before diving into debugging tricks, I found that I was able to get the method working by switching strategies and making sure that I was assigning every component pertaining to the two triangles first. <br>
 Below I have included an image of a schematic I drew in order to reason about pointer assignments in the data structure. I found that by following the schematic I was able to get a working implementation. <br>
-  In the end, I found that a thorough and explicit solution was easier to get correct than to try to express it more elegantly by trying to leverage symmetry in assignments. 
+  In the end, I found that a thorough and explicit solution was easier to get correct than to try to express it more elegantly by trying to leverage symmetry in assignments in code refactoring. 
 </p>
 
 <div align="middle">
