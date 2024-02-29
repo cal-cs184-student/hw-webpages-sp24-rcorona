@@ -363,7 +363,7 @@ Next, I computed the updated vertex positions for new vertices that will be crea
   <p>
 I next split all edges in the original mesh. In order to do this without looping infinitely, I first put all the original edges inside of a vector, which I then iterate over. 
     In each iteration, I split the edge and assign the new vertex resulting from the split into a variable <i>new_v</i>. At this point, I mark that vertex as new (<i>new_v-&gt;isNew = true</i>) and set its new position to the position currently stored in the split edge. <br>
-    I then collect all three new edges created by the split by traversing from the new vertices half-edge, and mark the first edge as not new (since it is along the original edge) and the other two are marked as new. 
+    I then collect all three new edges created by the split by traversing from the new vertice's half-edge, and mark the first edge as not new (since it is along the original edge) and the other two are marked as new. 
     <p>
 I next flip any edge that connects an old and new vertex. This is done by looping over all edges in the mesh and first checking if they are new. 
       If the edge is new, then I get both verties associated with the edge (using the edge's half-edge and its twin). 
