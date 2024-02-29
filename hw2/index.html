@@ -378,7 +378,7 @@ I next flip any edge that connects an old and new vertex. This is done by loopin
 <p>
   <b>Debugging:</b> The only problem I ran into during development of the method was an infinite loop that popped up when performing edge splitting. 
   I realized that was caused by the addition of edges into the mesh during splitting, which was causing the loop to never finish. 
-  Therefore, in order to fix this I gathered all pre-existing edges into a vector prior to splitting and then iterated over that vector in order to only split
+  Therefore, in order to fix this, I gathered all pre-existing edges into a vector prior to splitting and then iterated over that vector in order to only split
   a finite number of edges. 
 </p>  
   
