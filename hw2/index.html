@@ -103,7 +103,7 @@ At the termination of the loop, the vector of intermediate points is returned.
 <h3 align="middle">Part 2: Bezier Surfaces with Separable 1D de Casteljau</h3>
 <p>
 <b>Explanation:</b> The de Casteljau's algorithm does not fundamentally change when applied to Bezier surfaces, the same algorithm used to evaluate a point on a single line is instead used multiple times to produce a point on the surface. <br>
-  Given a (n * n) control points and a coordinate (u, v) to evaluate within the surface, the algorithm works as follows: <br>
+  Given (n * n) control points and a coordinate (u, v) to evaluate within the surface, the algorithm works as follows: <br>
   Without loss of generality, we first evaluate the coordinate u using the 1D de Casteljau algorithm on each of the n rows of control points, this will yield the point for u on each of the n Bezier curves defined by the rows. <br>
   Let's denote this set of n evaluated u points as p_u. <br>
   The set of points p_u itself now serve as a set of control points defining a Bezier curve, and evaluating this Bezier curve at coordinate v using the 1D de Casteljau algorithm will yield the final point with coordinate (u,v) on the Bezier surface.
