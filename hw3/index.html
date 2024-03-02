@@ -1,7 +1,71 @@
-<html>
-	<head>
-	</head>
-	<body>
-		Homework 3 index.html here
-	</body>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<style>
+  body {
+    padding: 100px;
+    width: 1000px;
+    margin: auto;
+    text-align: left;
+    font-weight: 300;
+    font-family: 'Open Sans', sans-serif;
+    color: #121212;
+  }
+  h1, h2, h3, h4 {
+    font-family: 'Source Sans Pro', sans-serif;
+  }
+</style>
+<title>CS 184/284A Pathtracer</title>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<link href="https://fonts.googleapis.com/css?family=Open+Sans|Source+Sans+Pro" rel="stylesheet">
+</head>
+
+
+<body>
+
+<h1 align="middle">CS 184/284A: Computer Graphics and Imaging, Spring 2024</h1>
+<h1 align="middle">Homework 2: Pathtracer</h1>
+<h2 align="middle">Rodolfo Corona Rodriguez (3034203306) </h2>
+<h2 align="middle">Website: https://cal-cs184-student.github.io/hw-webpages-sp24-rcorona/hw3/index.html </h2>
+
+<br><br>
+
+<h2 align="middle">Overview</h2>
+
+TODO
+
+<h3 align="middle">Part 1: Ray Generation and Scene Intersection</h3>
+
+<p>
+<b>Ray Generation:</b> In the ray generation part of the pipeline, we are interested in estimating the irradiance of a pixel, i.e. its rendered value in the image, by taking samples of light that might come into the pixel from 
+different regions of the scene. Although a pixel might have a single RGB value in the display, in an image it is not a single point, but rather a continuous region in an image. Therefore, in order to get a proper estimate of its value, 
+we need to sample light coming into different points within that region in order to get an estimate of the irradiance. 
+A ray, or vector, originating from the origin of the camera and passing through a point in the pixel's region represents such an estimate. Because rays passing through different points in the region of the pixel may then intersect different
+portions of the scene, the radiance they contribute may be different, and an average over the radiance of various random rays coming into the sensor from across the pixel's region will provide an estimate of that pixel's true irradiance. 
+<br><br>
+
+<b>Primitive Intersection:</b> Given a ray from the camera passing into the scene, we next sample its radiance contribution to a pixel by taking the radiance coming into the rays direction from the object(s) it intsersects with in the scene. 
+Therefore, in order to determine which point(s) in the scene will contribute to a ray's radiance, we need to perform intersection tests to see which object(s) the ray will collide with. 
+In Part I we only consider intersection with triangle or sphere primitives in the scene. <br><br>
+For a sphere we can directly solve for the intersection point(s) of the ray analytically by solving a quadratic equation -- if the discriminant of the quadratic is non-negative, then the quadratic has real root(s) which correspond to the
+intersection point(s) of the ray with the sphere. <br>
+We explain the case of the triangle intersection test below: <br><br>
+
+<b>Triangle Intersection Test: </b> To perform a triangle intersection test, I first check to see if the ray intersects with the plane that the triangle lies within (this is implemented as a helper function). 
+To determine the point of plane intersection, I first compute the normal vector N to the plane as the cross product between v1-->v2 and v1-->v3, i.e. the two vectors obtained by subtracting the first or second vertex respectively 
+from the third vertex in the triangle. Given the normal vector, we next solve for the parameter t along the ray which intersects with the plane using the equation <i>t = dot(p1 - r.o, N) / dot(r.d, N)</i>. 
+<br><br>
+Having determined the intersection point t, we next verify if it lies within the bounds of [r.min_t, r.max_t]. If it doesn't then it is not a valid intersection and we return. <br>
+If it does lie within the bounds, then we check to see if the plane intersection point lies within the triangle by performing a series of three line tests, one for each line defined by the three edges of the triangle.   
+Each line tests determines if the plane intersection point lies in the positive half-plane of a plane defined by a normal vector N to a given side (by taking the dot product between N and the vector from a vertex on the edge to the intersection point). 
+The normal vector is obtained by projecting one of the two other edges onto the tested edge (e.g. projecting v1-->v3 onto v1-->v2) and subtracting the projection from the projected edge (e.g. N = v1-->v3 - proj_v1-->v3(v1-->v2)). 
+
+If all three line tests return a dot product >= 0, then the point is determined to lie within the triangle. The isect is then filled in with the intersection parameter t, a pointer to the triangle, the bsdf function of the triangle, and its normal. 
+To compute the normal vector for the intersection point, we interpolate the normals from the triangle vertices using barycentric coordinates. 
+The barycentric coordiantes are obtainted by taking the proportion of the line test from an edge with the intersection point and the line test from that same edge and the triangle vertex that is not on that edge. 
+This line test works because a division of line tests works out to be equivalent to the proportion of the projections of each of the two vectors obtained by subtracting a triangle vertex on the line from the point being tested, 
+i.e. the proportion represents the percentage of how close the point is from the third vertex, and hence will always be in [0, 1]. 
+</p>
+	
+</body>
 </html>
