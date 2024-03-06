@@ -36,6 +36,8 @@ TODO
 
 <h3 align="middle">Part 1: Ray Generation and Scene Intersection</h3>
 
+<b>TODO</b>: We're missing some part of the pipeline explanation here! At least missing talk about camera --> world matrix and instantiation of rays? 
+  
 <p>
 <b>Ray Generation:</b> In the ray generation part of the pipeline, we are interested in estimating the irradiance of a pixel, i.e. its rendered value in the image, by taking samples of light that might come into the pixel from 
 different regions of the scene. Although a pixel might have a single RGB value in the display, in an image it is not a single point, but rather a continuous region in an image. Therefore, in order to get a proper estimate of its value, 
@@ -94,6 +96,34 @@ i.e. the proportion represents the percentage of how close the point is from the
       </td>
     </tr>
   </table>
+
+<h3 align="middle">Part 2: Bounding Volume Hierarchy</h3>
+
+<p>
+<b>BVH Construction Algorithm:</b> For BVH construction, I first begin by creating a bounding box object to represent the node and iterating over all primitives from <i>start</i> to <i>end</i>.
+  Through the iteration, I expand the node's bounding box by each primitive's bounding box and I also generate a vector&lt;Vector3D&gt; where I push back all of the primitive centroids and 
+  a vector&lt;Primitive *&gt; where I push back all of the primitive pointers. <br><br>
+
+  Having created the bounding box for the current node, I allocate a new BVHNode object which I instantiate with the bounding box described above. 
+  Now that we have a node object created with the appropriate bounding box, I proceed in one of two cases (described below): (1) If the number of primitives is <= max_leaf_size, then 
+  I create a leaf node. (2) If the number of primitives is > max_leaf_size then I recurse and create two children nodes for the current node. <br><br>
+
+  <u><i>Case 1 (Leaf Node):</i></u> In the case of a leaf node, I simply set node-&gt;start = start and node->&gt;end = end to designate it as a leaf node.<br><br>
+
+  <u><i>Case 2 (Primitive Splitting):</i></u> In the case of a split, I first compute the means of the centroids by summing over them in a loop and dividing the sum
+    by the size of the vector containing them. Having computed the means, I then compute the variances of the centroids as the sum over all centroids of <i>(centroid[i] - means)^2</i>
+    and dividing by the size of the vector containing the centroids. <br>
+    <b><u>Splitting Heuristic</u>:</b> Having computed the variances of the centroids, I then select the dimension (x, y, or z) with the highest variance as the dimension to split on, 
+    with every primitive having a centroid value at that dimension less than or equal to the dimension's centroid mean going on the left branch, and otherwise on the right branch. 
+    To split the primitives, I allocate two new Primitive* vectors (<i>left_prims</i> and <i>right_prims)</i> into which I push back the pertinent primitives. 
+    I then set the current node's <i>l</i> and <i>r</i> variables to the node returned by recursing into <i>construct_bvh(left_prims.begin(), left_prims.end(), max_leaf_size)</i>
+    <i>construct_bvh(right_prims.begn(), right_prims.end(), max_leaf_size)</i>.<br>
+    <b><u>Heuristic Explanation:</u></b> The intuition behind this heuristic is that splitting at the mean location on the dimension with the highest centroid variance 
+    will likely lead to the two branches with the largest extents in the sizes of their resulting bounding boxes. By maximizing the expected sizes of the two branches' bounding 
+    box extents, we can maximimize the amount of space that is excluded when a branch is pruned during ray intersection search, which will hopefully lead to greater compute savings.  
+  
+</p>
+  
 </div>
 
 </body>
