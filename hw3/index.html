@@ -96,7 +96,8 @@ i.e. the proportion represents the percentage of how close the point is from the
       </td>
     </tr>
   </table>
-
+</div>
+  
 <h3 align="middle">Part 2: Bounding Volume Hierarchy</h3>
 
 <p>
@@ -121,10 +122,38 @@ i.e. the proportion represents the percentage of how close the point is from the
     <b><u>Heuristic Explanation:</u></b> The intuition behind this heuristic is that splitting at the mean location on the dimension with the highest centroid variance 
     will likely lead to the two branches with the largest extents in the sizes of their resulting bounding boxes. By maximizing the expected sizes of the two branches' bounding 
     box extents, we can maximimize the amount of space that is excluded when a branch is pruned during ray intersection search, which will hopefully lead to greater compute savings.  
-  
 </p>
-  
+
+<p>
+<b>Results with Normal Shading:</b> Below we visualize renderings for *, *, *, and *, which are all relatively larger files which would have taken much longer to render without BVH
+  acceleration: 
+
+  <div align="middle">
+  <table style="width=100%">
+    <tr>
+      <td>
+        <img src="images/task1_CBcoil.png" align="middle" width="480px"/>
+        <figcaption align="middle">CBcoil.dae</figcaption>
+      </td>
+      <td>
+        <img src="images/task1_CBgems.png" align="middle" width="480px"/>
+        <figcaption align="middle">CBgems.dae</figcaption>
+      </td>
+    </tr>
+      <tr>
+      <td>
+        <img src="images/task1_banana.png" align="middle" width="480px"/>
+        <figcaption align="middle">banana.dae</figcaption>
+      </td>
+      <td>
+        <img src="images/task1_bench.png" align="middle" width="480px"/>
+        <figcaption align="middle">bench.dae</figcaption>
+      </td>
+    </tr>
+  </table>
 </div>
+
+</p>
 
 </body>
 </html>
