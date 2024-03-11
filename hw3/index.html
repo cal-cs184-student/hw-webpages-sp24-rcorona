@@ -39,21 +39,21 @@ TODO
 <b>TODO</b>: We're missing some part of the pipeline explanation here! At least missing talk about camera --> world matrix and instantiation of rays? 
   
 <p>
-<b>Ray Generation:</b> In the ray generation part of the pipeline, we are interested in estimating the irradiance of a pixel, i.e. its rendered value in the image, by taking samples of light that might come into the pixel from 
+<b><u>Ray Generation:</u></b> In the ray generation part of the pipeline, we are interested in estimating the irradiance of a pixel, i.e. its rendered value in the image, by taking samples of light that might come into the pixel from 
 different regions of the scene. Although a pixel might have a single RGB value in the display, in an image it is not a single point, but rather a continuous region in an image. Therefore, in order to get a proper estimate of its value, 
 we need to sample light coming into different points within that region in order to get an estimate of the irradiance. 
 A ray, or vector, originating from the origin of the camera and passing through a point in the pixel's region represents such an estimate. Because rays passing through different points in the region of the pixel may then intersect different
 portions of the scene, the radiance they contribute may be different, and an average over the radiance of various random rays coming into the sensor from across the pixel's region will provide an estimate of that pixel's true irradiance. 
 <br><br>
 
-<b>Primitive Intersection:</b> Given a ray from the camera passing into the scene, we next sample its radiance contribution to a pixel by taking the radiance coming into the rays direction from the object(s) it intsersects with in the scene. 
+<b><u>Primitive Intersection:</u></b> Given a ray from the camera passing into the scene, we next sample its radiance contribution to a pixel by taking the radiance coming into the rays direction from the object(s) it intsersects with in the scene. 
 Therefore, in order to determine which point(s) in the scene will contribute to a ray's radiance, we need to perform intersection tests to see which object(s) the ray will collide with. 
 In Part I we only consider intersection with triangle or sphere primitives in the scene. <br><br>
 For a sphere we can directly solve for the intersection point(s) of the ray analytically by solving a quadratic equation -- if the discriminant of the quadratic is non-negative, then the quadratic has real root(s) which correspond to the
 intersection point(s) of the ray with the sphere. <br>
 We explain the case of the triangle intersection test below: <br><br>
 
-<b>Triangle Intersection Test: </b> To perform a triangle intersection test, I first check to see if the ray intersects with the plane that the triangle lies within (this is implemented as a helper function). 
+<b><u>Triangle Intersection Test:</u></b> To perform a triangle intersection test, I first check to see if the ray intersects with the plane that the triangle lies within (this is implemented as a helper function). 
 To determine the point of plane intersection, I first compute the normal vector N to the plane as the cross product between v1-->v2 and v1-->v3, i.e. the two vectors obtained by subtracting the first or second vertex respectively 
 from the third vertex in the triangle. Given the normal vector, we next solve for the parameter t along the ray which intersects with the plane using the equation <i>t = dot(p1 - r.o, N) / dot(r.d, N)</i>. 
 <br><br>
@@ -70,7 +70,7 @@ i.e. the proportion represents the percentage of how close the point is from the
 </p>
 
 <p>
-  <b>Results:</b> Below we can see four images that were rendered with the code from Part I: CBcoil.dae, CBgems.dae, bench.dae, and banana.dae. 
+  <b><u>Results:</u></b> Below we can see four images that were rendered with the code from Part I: CBcoil.dae, CBgems.dae, bench.dae, and banana.dae. 
 </p>
   
 <div align="middle">
@@ -101,7 +101,7 @@ i.e. the proportion represents the percentage of how close the point is from the
 <h3 align="middle">Part 2: Bounding Volume Hierarchy</h3>
 
 <p>
-<b>BVH Construction Algorithm:</b> For BVH construction, I first begin by creating a bounding box object to represent the node and iterating over all primitives from <i>start</i> to <i>end</i>.
+<b><u>BVH Construction Algorithm:</u></b> For BVH construction, I first begin by creating a bounding box object to represent the node and iterating over all primitives from <i>start</i> to <i>end</i>.
   Through the iteration, I expand the node's bounding box by each primitive's bounding box and I also generate a vector&lt;Vector3D&gt; where I push back all of the primitive centroids and 
   a vector&lt;Primitive *&gt; where I push back all of the primitive pointers. <br><br>
 
@@ -125,29 +125,29 @@ i.e. the proportion represents the percentage of how close the point is from the
 </p>
 
 <p>
-<b>Results with Normal Shading:</b> Below we visualize renderings for *, *, *, and *, which are all relatively larger files which would have taken much longer to render without BVH
+<b><u>Results with Normal Shading:</u></b> Below we visualize renderings for <i>wall-e.dae</i> (36.5MB), <i>dragon.dae</i> (8.7MB), <i>CBlucy.dae</i> (18.3MB), and <i>blob.dae</i> (29.1MB), which are all relatively larger files which would have taken much longer to render without BVH
   acceleration: 
 
   <div align="middle">
   <table style="width=100%">
     <tr>
       <td>
-        <img src="images/task1_CBcoil.png" align="middle" width="480px"/>
-        <figcaption align="middle">CBcoil.dae</figcaption>
+        <img src="images/part2_wall-e.png" align="middle" width="480px"/>
+        <figcaption align="middle">wall-e.dae</figcaption>
       </td>
       <td>
-        <img src="images/task1_CBgems.png" align="middle" width="480px"/>
-        <figcaption align="middle">CBgems.dae</figcaption>
+        <img src="images/part2_dragon.png" align="middle" width="480px"/>
+        <figcaption align="middle">dragon.dae</figcaption>
       </td>
     </tr>
       <tr>
       <td>
-        <img src="images/task1_banana.png" align="middle" width="480px"/>
-        <figcaption align="middle">banana.dae</figcaption>
+        <img src="images/part2_CBlucy.png" align="middle" width="480px"/>
+        <figcaption align="middle">CBlucy.dae</figcaption>
       </td>
       <td>
-        <img src="images/task1_bench.png" align="middle" width="480px"/>
-        <figcaption align="middle">bench.dae</figcaption>
+        <img src="images/part2_blob.png" align="middle" width="480px"/>
+        <figcaption align="middle">blob.dae</figcaption>
       </td>
     </tr>
   </table>
