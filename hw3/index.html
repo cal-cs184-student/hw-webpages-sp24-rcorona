@@ -157,7 +157,8 @@ i.e. the proportion represents the percentage of how close the point is from the
 <h4 align="middle"> Compare rendering times on a few scenes with moderately complex geometries with and without BVH acceleration. Present your results in a one-paragraph analysis.</h4>
 Below we present screenshots of rendering times for <i>beetle.dae</i> (1.1 MB, 7558 primitives), <i>peter.dae</i> (2.7 MB, 40018 primitives), <i>bunny.dae</i> (2.2 MB, 33696 primitives), and <i>CBbunny.dae</i> (1.8 MB, 28588 primitives), all of which are files with moderately complex geometries 
   (single digit Megabytes in size). 
-  On the left side we can see the runtime <b>without</b> bvh acceleration, and on the right we can see runtime <b>with</b> bvh acceleration.  
+  On the left side we can see the runtime <b>without</b> bvh acceleration, and on the right we can see runtime <b>with</b> bvh acceleration. 
+  All renders are generated with one ray per pixel and a resolution of 480x360. 
 
   <div align="middle">
   <table style="width=100%">
@@ -204,7 +205,20 @@ Below we present screenshots of rendering times for <i>beetle.dae</i> (1.1 MB, 7
   </table>
   </div>
 
-  <b><u>One Paragraph Analysis:</u></b> 
+  <b><u>One Paragraph Analysis:</u></b> Firstly, one can observe that the renders using BVH acceleration complete significantly faster than the renders without them. 
+  To verify the runtime of the BVH algorithm, we can take <i>peter.dae</i> as an example. Rendering for the scene averages 5707 intersection tests per ray. 
+  Because the BVH algorithm splits the scene into a binary tree of primitive subsets, we would expect the number of intersections to be roughly log_2(N) when using BVH acceleration. 
+  Further, because the leaves consist of 4 primitives at most each, then our expected number of intersections will be log_2(5707 / 4) + 4 = 14.47. Interestingly, we can see that
+  the actual number of intersections is lower at 7.5 average intersections, which is 51.8% of the expected amount. Using the same formulation for the other renders, we get 53.4%, 44%, and 56%, 
+  for <i>beetle.dae</i>, <i>CBbunny.dae</i>, and <i>bunny.dae</i>, respectively. This discrepancy, is likely due to the fact that the BVH tree will be pruned during each ray's traversal
+  by using the min_t and max_t parameters from the ray in question. <br>
+  Next, we can observe that the runtime is faster by a factor of 346.2/ 0.597 = 579.8, 58.6 / 0.4903 = 119.5, 297.8 / 0.614 = 485, and 261.5 / 0.587 = 445.5 for <i>peter.dae</i>, 
+  <i>beetle.dae</i>, <i>bunny.dae</i>, and <i>CBbunny.dae</i>, respectively. These factors appear to be in line with the relative sizes of the files, with the largest file (peter) 
+  and the smallest file (beetle) having the largest and smallest proportional speedups. Therefore, since the speedup factor is not constant and increases with the size of the file, we can 
+  conclude that the runtime of the BVH traversal algorithm is indeed sub-linear on the number of primitives. 
+  
+  
+  
   
 </body>
 </html>
