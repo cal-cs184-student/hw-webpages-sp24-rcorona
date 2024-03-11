@@ -151,9 +151,58 @@ i.e. the proportion represents the percentage of how close the point is from the
       </td>
     </tr>
   </table>
-</div>
-
+  </div>
 </p>
 
+<h4 align="middle"> Compare rendering times on a few scenes with moderately complex geometries with and without BVH acceleration. Present your results in a one-paragraph analysis.</h4>
+Below we present screenshots of rendering times for <i>beetle.dae</i> (1.1 MB), <i>peter.dae</i> (2.7 MB), <i>bunny.dae</i> (2.2 MB), and <i>CBbunny.dae</i> (1.8 MB), all of which are files with moderately complex geometries 
+  (single digit Megabytes in size). 
+  On the left side we can see the runtime <b>without</b> bvh acceleration, and on the right we can see runtime <b>with</b> bvh acceleration.  
+
+  <div align="middle">
+  <table style="width=100%">
+    <tr>
+      <td>
+        <img src="images/part2_peter_rt_nbvh.png" align="middle" width="480px"/>
+        <figcaption align="middle">peter.dae <i>without</i> bvh acceleration.</figcaption>
+      </td>
+      <td>
+        <img src="images/part2_peter_rt_bvh.png" align="middle" width="480px"/>
+        <figcaption align="middle">peter.dae <i>with</i> bvh acceleration.</figcaption>
+      </td>
+    </tr>
+      <tr>
+      <td>
+        <img src="images/part3_beetle_rt_nbvh.png" align="middle" width="480px"/>
+        <figcaption align="middle">beetle.dae <i>without</i> bvh acceleration.</figcaption>
+      </td>
+      <td>
+        <img src="images/part2_beetle_rt_bvh.png" align="middle" width="480px"/>
+        <figcaption align="middle">beetle.dae <i>with</i> bvh acceleration.</figcaption>
+      </td>
+    </tr>
+        <tr>
+      <td>
+        <img src="images/part2_bunny_rt_nbvh.png" align="middle" width="480px"/>
+        <figcaption align="middle">bunny.dae <i>without</i> bvh acceleration.</figcaption>
+      </td>
+      <td>
+        <img src="images/part2_bunny_rt_bvh.png" align="middle" width="480px"/>
+        <figcaption align="middle">bunny.dae <i>with</i> bvh acceleration.</figcaption>
+      </td>
+    </tr>
+      <tr>
+      <td>
+        <img src="images/part3_CBbunny_rt_nbvh.png" align="middle" width="480px"/>
+        <figcaption align="middle">CBbunny.dae <i>without</i> bvh acceleration.</figcaption>
+      </td>
+      <td>
+        <img src="images/part2_CBbunny_rt_bvh.png" align="middle" width="480px"/>
+        <figcaption align="middle">CBbunny.dae <i>with</i> bvh acceleration.</figcaption>
+      </td>
+    </tr>
+  </table>
+  </div>
+  
 </body>
 </html>
