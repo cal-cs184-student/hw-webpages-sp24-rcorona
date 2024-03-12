@@ -252,6 +252,21 @@ Below we present screenshots of rendering times for <i>beetle.dae</i> (1.1 MB, 7
   
   <h4 aligh="middle">Pick one scene and compare rendered views first with only direct illumination, then only indirect illumination. Use 1024 samples per pixel. (You will have to edit PathTracer::at_least_one_bounce_radiance(...) in your code to generate these views.)</h4>
 
+    <div align="middle">
+  <table style="width=100%">
+      <tr>
+      <td>
+        <img src="images/CBbunny_L_1024_16_1.png" align="middle" width="480px"/>
+        <figcaption align="middle">CBbunny.dae with <b>only</b> direct illumination.</figcaption>
+      </td>
+      <td>
+        <img src="images/part4_indirect_only.png" align="middle" width="480px"/>
+        <figcaption align="middle">CBbunny.dae with <b>only</b> indirect illumination.</figcaption>
+      </td>
+    </tr>
+  </table>
+  </div>
+  
   <h4 aligh="middle">For CBbunny.dae, render the mth bounce of light with max_ray_depth set to 0, 1, 2, 3, 4, and 5 (the -m flag), and isAccumBounces=false. Explain in your writeup what you see for the 2nd and 3rd bounce of light, and how it contributes to the quality of the rendered image compared to rasterization. Use 1024 samples per pixel.</h4>
 
   <h4 aligh="middle">For CBbunny.dae, compare rendered views with max_ray_depth set to 0, 1, 2, 3, 4, and 5(the -m flag). Use 1024 samples per pixel.</h4>
