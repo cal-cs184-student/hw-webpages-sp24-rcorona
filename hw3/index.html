@@ -244,8 +244,34 @@ Below we present screenshots of rendering times for <i>beetle.dae</i> (1.1 MB, 7
   calling Vector3D L = zero_bounce_radiance with the one-bounce ray and a new Intersection object. Next we return the irradiance contribution as
   L_out = (bsdf * L * costheta) / pdf;. <br><br>
 
-  <b><u>Direct Lighting Importance:</u></b>
-  
+  <b><u>Direct Lighting Importance:</u></b> 
+
+  The <i>estimate_direct_lighting_importance</i> method at a high level works similarly to the above, with samples being accumulated in a variable
+  Vector3D L_out. 
+  First, we define a loop that iterates from i=0 to i = scene-&gt;lights.size() iterations. 
+  In each iteration, we retrieve the light SceneLight* light = scene-&gt;lights[i] and define its number of samples <i>n_l_samples</i>i> as 1 if it is a delta light 
+  and otherwise to ns_area_light. We add this number to an int <i>total_samples</i> which keeps track of the total number of samples we've taken. 
+  Next, we add the contribution from that sample using a helper method: <br>
+  L_out += dl_get_lights_sample(light, &isect, n_l_samples, &hit_p, &w_out, &o2w, &w2o);. 
+  At the end of the loop, we return L_out / (double)total_samples. <br><br>
+
+  The helper function <i>dl_get_lights_sample</i> represents the irradiance contribution from a single light. 
+  Within it, we first define a loop which will iterate for <i>n_l_samples</i> (defined above). For each sample, we first sample an incoming 
+  direction from the light as well as its emission, distance from ray origin, and pdf as L = light-&gt;sample_L(*hit_p, &w_in, &light_dist, &pdf).
+  The cosine of the angle between the normal and incoming sample is computed as dot(isect-&gt;n, w_in) since sample_L returns an incoming direction 
+  in the world coordinate space (which isect-&gt;n also lies in). 
+  Next, we determine if the sampled direction lies within the hemisphere defined by the points surface normal, since we want to avoid additional unnecessary 
+  computation in the case that the light lies behind the object (i.e. the direction lies in the opposite hemisphere). <br>
+  To do this we check if (acos(costheta) <= PI / 2.0), since any angle at most PI/2 radians away from the surface normal will lie within the hemisphere. 
+  If the light does indeed lie within the hemisphere, then we first compute a shadow ray to check if there is any primitive obstructing the ray from the light. 
+  The ray will originate at hit_p with direction w_in. It's min_t parameter will be initialized to EPS_F to avoid hitting the object of origin and
+  the max_t will be set to abs(light_dist) - EPS_F, i.e. to only account for objects that lie in the ray's direction <i>before</i> the light and not consider anything
+  past the light. 
+  Assuming that the shadow ray does not intersect with any primitives, then  
+  the bsdf from the incoming direction is computed similarly as before with bsdf = isect-&gt;bsdf-&gt;f(*w_out, (*w2o) * w_in), 
+  with the w_in direction being converted to object coordinate space prior to bsdf computation. 
+  <br><br>
+  Lastly, the contribution from this light is added as L_out += (L * bsdf * costheta) / pdf;. 
   
   <h4 align="middle">Show some images rendered with both implementations of the direct lighting function.</h4>
 
