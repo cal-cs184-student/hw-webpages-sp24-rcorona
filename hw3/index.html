@@ -230,6 +230,9 @@ Below we present screenshots of rendering times for <i>beetle.dae</i> (1.1 MB, 7
   or <i>estimate_direct_lighting_importance</i> if <i>direct_hemisphere_sample</i> is true or false, respectively. 
   <br><br>
 
+  <b><u>Diffuse BSDF:</u></b> TODO
+  <br><br>
+  
   <b><u>Direct Hemisphere Sample:</u></b> In <i>estimate_direct_lighting_hemisphere</i> we define a Vector3D <i>L_out</i> which we use to represent the one bounce
   irradiance estimate. First, we define a loop with <i>num_samples</i> iterations and in each iteration add sampled irradiance to L_out which we compute with a helper method 
   <i>dl_hemisphere_sample</i>. At the end of the loop, we return L_out / (double)num_samples as the averaged estimate. <br><br>
@@ -274,7 +277,7 @@ Below we present screenshots of rendering times for <i>beetle.dae</i> (1.1 MB, 7
   Lastly, the contribution from this light is added as L_out += (L * bsdf * costheta) / pdf;. 
   
   <h4 align="middle">Show some images rendered with both implementations of the direct lighting function.</h4>
-
+    
     <div align="middle">
   <table style="width=100%">
     <tr>
@@ -333,7 +336,19 @@ Below we present screenshots of rendering times for <i>beetle.dae</i> (1.1 MB, 7
   
   <h4 align="middle">Walk through your implementation of the indirect lighting function</h4>
 
-  TODO
+  <b><u>Overview:</u></b> Within <i>est_radiance_global_illumination</i> we make a few changes. First, after the L_out = zero_bounce contribution, we check to see if
+    max_ray_depth is > 0. If so, then we call Vector3D recurse_light = at_least_one_bounce_radiance(r, isect) to accumulate irradiance from at least one bounce. 
+    If isAccumBounces is true, then we aggregate irradiance as L_out += recurse_light. If it is false, then we set L_out = recurse_light in order to only get 
+    the deepest bounce of light. <br><br>
+
+    <b><u>at_least_one_bounce_radiance:</u></b> First, we compute the contribution of the one bounce radiance as L_out = one_bounce_radiance(r, isect).
+    For the base case of the recursie, we now first check to see if r.depth + 1 == max_ray_depth (note that we add one because ray depth is initialized to 0). 
+    If we have indeed reached maximum depth, then we simplly return L_out. <br><br>
+
+    If we have not yet reached maximum depth, then we move on to computing the contribution of further bounces. 
+    
+    TODO                                                                                                                                                    
+    
   
   <h4 aligh="middle">Show some images rendered with global (direct and indirect) illumination. Use 1024 samples per pixel.</h4>
 
