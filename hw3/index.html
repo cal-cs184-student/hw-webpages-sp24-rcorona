@@ -221,7 +221,31 @@ Below we present screenshots of rendering times for <i>beetle.dae</i> (1.1 MB, 7
 
   <h4 align="middle">Walk through both implementations of the direct lighting function.</h4>
 
-  TODO
+  <b><u>Overview:</u></b> First, in <i>est_radiance_global_illumination</i> we will collect all of the summed irradiance into a Vector3D variable <i>L_out</i>. 
+  L_out starts as a 0 vector, and we first check to see if the queried ray interesects with anything in the scene by calling the bvh <i>intersect</i> method.
+  If there is an intersection, then we first add the irradiance contribution from <i>zero_bounce_radiance</i>, which itself simply returns the emission from the bsdf contained by 
+  the isect data structure. <br><br>
+
+  Next we add the irradiance contribution comptued with <i>one_bounce_radiance</i>, which itself calls either <i>estimate_direct_lighting_hemisphere</i>
+  or <i>estimate_direct_lighting_importance</i> if <i>direct_hemisphere_sample</i> is true or false, respectively. 
+  <br><br>
+
+  <b><u>Direct Hemisphere Sample:</u></b> In <i>estimate_direct_lighting_hemisphere</i> we define a Vector3D <i>L_out</i> which we use to represent the one bounce
+  irradiance estimate. First, we define a loop with <i>num_samples</i> iterations and in each iteration add sampled irradiance to L_out which we compute with a helper method 
+  <i>dl_hemisphere_sample</i>. At the end of the loop, we return L_out / (double)num_samples as the averaged estimate. <br><br>
+  The helper function <i>dl_hemisphere_sample</i> we take pointers to <i>isect, hit_p, w_out,</i> and <i>o2w</i> as input. 
+  Next, we sample an incoming light direction <i>w_in</i> and pdf estimate <i>pdf</i> by calling Vector3D bsdf = isect-&gt;bsdf&gt;sample_f(*w_out, &w_in, &pdf). 
+  To compute the cosine of the incoming light ray angle, we take the dot product between w_in and Vector3D(0.0, 0.0, 1.0) because w_in is currently in the object
+  coordinate space. 
+  Next, we instantiate the one-bounce ray, which is defined with origin hit_p and direction (o2w * w_in), since w_in needs to be rotated into world coordinates. 
+  The ray's min_t is initialized to EPS_F in order to avoid collisions with the object of origin. <br>
+  If the ray doesn't intersect with anything then we simply return Vector3D(0.0), representing zero contribution to irradiance.<br>
+  If the ray does intersect with a primitive in the scene (determined calling the bvh intersect method), then we compute the light emission from that primitive by 
+  calling Vector3D L = zero_bounce_radiance with the one-bounce ray and a new Intersection object. Next we return the irradiance contribution as
+  L_out = (bsdf * L * costheta) / pdf;. <br><br>
+
+  <b><u>Direct Lighting Importance:</u></b>
+  
   
   <h4 align="middle">Show some images rendered with both implementations of the direct lighting function.</h4>
 
