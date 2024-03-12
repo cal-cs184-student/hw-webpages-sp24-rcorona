@@ -217,8 +217,47 @@ Below we present screenshots of rendering times for <i>beetle.dae</i> (1.1 MB, 7
   and the smallest file (beetle) having the largest and smallest proportional speedups. Therefore, since the speedup factor is not constant and increases with the size of the file, we can 
   conclude that the runtime of the BVH traversal algorithm is indeed sub-linear on the number of primitives. 
   
+  <h3 align="middle">Part 3: Direct Illumination</h3>
+
+  <h4 align="middle">Walk through your implementation of the indirect lighting function</h4>
+
+  TODO
   
+  <h4 aligh="middle">Show some images rendered with global (direct and indirect) illumination. Use 1024 samples per pixel.</h4>
+
+    <div align="middle">
+  <table style="width=100%">
+    <tr>
+      <td>
+        <img src="images/CBspheres_lambertian_L_1024_16_1.png" align="middle" width="480px"/>
+        <figcaption align="middle">CBspheres.dae with direct illumination.</figcaption>
+      </td>
+      <td>
+        <img src="images/CBspheres_lambertian_L_1024_16_5.png" align="middle" width="480px"/>
+        <figcaption align="middle">CBspheres.dae with indirect illumination.</figcaption>
+      </td>
+    </tr>
+      <tr>
+      <td>
+        <img src="images/CBbunny_L_1024_16_1.png" align="middle" width="480px"/>
+        <figcaption align="middle">CBbunny.dae with direct illumination.</figcaption>
+      </td>
+      <td>
+        <img src="images/CBbunny_L_1024_16_5.png" align="middle" width="480px"/>
+        <figcaption align="middle">CBbunny.dae with indirect illumination.</figcaption>
+      </td>
+    </tr>
+  </table>
+  </div>
   
-  
+  <h4 aligh="middle">Pick one scene and compare rendered views first with only direct illumination, then only indirect illumination. Use 1024 samples per pixel. (You will have to edit PathTracer::at_least_one_bounce_radiance(...) in your code to generate these views.)</h4>
+
+  <h4 aligh="middle">For CBbunny.dae, render the mth bounce of light with max_ray_depth set to 0, 1, 2, 3, 4, and 5 (the -m flag), and isAccumBounces=false. Explain in your writeup what you see for the 2nd and 3rd bounce of light, and how it contributes to the quality of the rendered image compared to rasterization. Use 1024 samples per pixel.</h4>
+
+  <h4 aligh="middle">For CBbunny.dae, compare rendered views with max_ray_depth set to 0, 1, 2, 3, 4, and 5(the -m flag). Use 1024 samples per pixel.</h4>
+
+  <h4 aligh="middle">For CBbunny.dae, output the Russian Roulette rendering with max_ray_depth set to 0, 1, 2, 3, 4, and 100(the -m flag). Use 1024 samples per pixel.</h4>
+
+  <h4 aligh="middle">Pick one scene and compare rendered views with various sample-per-pixel rates, including at least 1, 2, 4, 8, 16, 64, and 1024. Use 4 light rays.</h4>
 </body>
 </html>
