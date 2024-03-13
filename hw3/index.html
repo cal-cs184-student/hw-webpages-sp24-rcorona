@@ -563,11 +563,30 @@ Below we present screenshots of rendering times for <i>beetle.dae</i> (1.1 MB, 7
   </table>
   </div>
 
- <h4 aligh="middle">Adaptive Sampling</h4>
+ <h4 aligh="middle">Part 5: Adaptive Sampling</h4>
 
    <h4 aligh="middle">Explain adaptive sampling. Walk through your implementation of the adaptive sampling.</h4>
 
-  TODO
+    <b><u>Explanation:</u></b> At a high-level, adaptive sampling aims to take a minimal number of samples (in this case of pixel irradiance) while ensuring that the sampled estimate lies 
+    within a desired confidence interval of the true value. Given a Z-value <i>C</i> for a confidence interval <i>P</i> (e.g. <i>C = 1.96</i> for <i>P = 95%</i> confidence) 
+    as well as a mean <i>u</i> and standard deviation <i>s</i> for a set with <i>n</i> samples, we can say that the given mean lies in the range
+    <u>u +/- I</u> with <i>P</i> confidence, where <i>I = C * s/sqrt(n)</i>. 
+    The final piece is that having computed <i>I</i>, we can now check after some number of samples if <i>I &lt;= u * maxTolerance</i>, where <i>maxTolerance</i> is a value in [0,1]. 
+    This check in essence is defining a tolerance threshold for what the maximum tolerated percentage away from the (likely) value of convergence we are, e.g. if we set 
+    <i>maxTolerance = 0.05</i> then the check will be true when (with 95% confidence) the true value will be within 5% of the current sample mean's value.  
+    <br><br>
+    <u><b>Implementation Walkthrough: </b></u> In our implementation we modify <i>raytrace_pixel</i> to break from its sampling loop (iterating over <i>ns_aa</i> samples) whenever the 
+    confidence interval check described above is true. 
+    Specifically, we first define a counter <i>total_samples</i> which we increment at every iteration so that we can keep track of the actual number of samples we take in case we exit
+    the loop early. 
+    We define two floats, <i>s1</i> and <i>s2</i>, which we will use to keep track of the sum of sampled values and sampled squared values, respectively 
+    (incremented at the end of each loop iteration). 
+    At each iteration of the loop, we first compute the current mean as <i>mean = s1 / (double)total_samples</i>, and the standard deviation as
+    <i>std = sqrt((1.0 / (double)(total_samples - 1.0)) * (s2 - (s1 * s1) / (double)total_samples))</i>. 
+    Next we compute the bounds for the 95% confidence interval as <i>I = 1.96 * (std / sqrt((double)total_samples))</i>. 
+    Next, if <i>I &lt;= maxTolerance * mean</i>, then we have converged within tolerated bounds and we break out of the loop. 
+    Lastly, we compute the current sample's illumination as <i>sample_illum = sample_estimate.illum()</i> and we increment <i>s1 += sample_illum</i>
+    and <i>s2 += (sample_illum * sample_illum)</i>.
   
    <h4 aligh="middle">Pick two scenes and render them with at least 2048 samples per pixel. Show a good sampling rate image with clearly visible differences in sampling rate over various regions and pixels. Include both your sample rate image, which shows your how your adaptive sampling changes depending on which part of the image you are rendering, and your noise-free rendered result. Use 1 sample per light and at least 5 for max ray depth.</h4>
 
