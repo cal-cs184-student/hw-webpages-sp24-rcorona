@@ -285,7 +285,7 @@ Below we present screenshots of rendering times for <i>beetle.dae</i> (1.1 MB, 7
   <h4 align="middle">Show some images rendered with both implementations of the direct lighting function.</h4>
 
   Below, we show images of <i>CBspheres_lambertian.dae</i> and <i>CBbunny.dae</i> both with hemisphere sampling and with light importance sampling. 
-  For each image, we use 64 sample rays per pixel and 32 light samples. Both sets of images use direct lighting only (m=1).  
+  For each image, we use 64 sample rays per pixel and 32 light/hemisphere samples. Both sets of images use direct lighting only (m=1).  
     
     <div align="middle">
   <table style="width=100%">
@@ -311,7 +311,28 @@ Below we present screenshots of rendering times for <i>beetle.dae</i> (1.1 MB, 7
     </tr>
   </table>
   </div>  
-  
+
+  <h4 align="middle">Compare the results between uniform hemisphere sampling and lighting sampling in a one-paragraph analysis.</h4>
+
+    As a general trend, we can observe that the images using uniform hemisphere sampling are clearly much noisier and grainy than their counterparts
+    rendered with direct light sampling. Firstly, we can notice that a large majority of "incorrect" pixel estimates in the hemisphere sampling case 
+    are completely dark pixels. These spots correspond to pixels for which none of the samples hit a light, something which due to the fact that 
+    hemisphere sampling shoots light rays in sampled uniformly from the hemisphere defined by the normal 
+    vector of the hit point in the first primitive intersection, which will generally result in a very low probability of landing on a light. 
+    This observation is further corroborated by observing objects whose normals point in the general direction of the light, such as the top of the 
+    bunny's back and head. In these spots the normal vectors likely point towards the light and hence a larger proportion of the sampling hemisphere
+    will result in a the light being hit, and so their samples have a proportionally lower amount of dark pixels than the rest of the scene. 
+    Lastly, we can note that the proportion of dark pixel is highest around shadows, which makes sense because hemisphere samples in points that are 
+    completely or partially obstructed from the light will have an even smaller probability of samples hitting a light than other regions of the scene. 
+    <br> 
+    In contrast, direct light sampling (under the selected settings of 64 rays per pixel and 32 light samples) does not suffer from this as much because 
+    it uses importance sampling to get an estimate of the irradiance distribution at a point. The true irradiance at a point is achieved by integrating over 
+    light contributions from all possible directions, however, there is a caveat that only directions with non-zero irradiance will actually contribute to this
+    estimate. Direct light sampling leverages this by taking samples only in directions that have a chance of having a non-zero contribution, while ignoring 
+    any direction which we could assert will have no contribution. Therefore, by only sampling from potentially <i>important</i> regions in the distribution, 
+    direct light sampling requires much fewer samples to converge than hemisphere sampling, as can be observed by the much more realistic renders yielded 
+    from direct light sampling. 
+    
   <h4 align="middle">Focus on one particular scene with at least one area light and compare the noise levels in soft shadows when rendering with 1, 4, 16, and 64 light rays (the -l flag) and with 1 sample per pixel (the -s flag) using light sampling, not uniform hemisphere sampling.</h4>
 
       Below we show images of <i>CBspheres_lambertian.dae</i> with 1, 4, 16, and 64 light rays during light sampling. 
@@ -351,10 +372,6 @@ Below we present screenshots of rendering times for <i>beetle.dae</i> (1.1 MB, 7
       so the sampled irradiance will now be an average of shadow rays (which contribute 0 irradiance) and color rays (which are unobstructed). 
       This averaging effect can be most clearly observed around shadow boundaries, where the shadow fades away much more gradually and uniformly as opposed to 
       the single sample case. This general trend can be observed in both of the intermediate images with 4 and 16 samples as well. 
-      
-  <h4 align="middle">Compare the results between uniform hemisphere sampling and lighting sampling in a one-paragraph analysis.</h4>
-
-  
       
   <h3 align="middle">Part 4: Global Illumination</h3>
   
