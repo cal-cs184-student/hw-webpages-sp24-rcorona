@@ -336,19 +336,34 @@ Below we present screenshots of rendering times for <i>beetle.dae</i> (1.1 MB, 7
   
   <h4 align="middle">Walk through your implementation of the indirect lighting function</h4>
 
-  <b><u>Overview:</u></b> Within <i>est_radiance_global_illumination</i> we make a few changes. First, after the L_out = zero_bounce contribution, we check to see if
-    max_ray_depth is > 0. If so, then we call Vector3D recurse_light = at_least_one_bounce_radiance(r, isect) to accumulate irradiance from at least one bounce. 
-    If isAccumBounces is true, then we aggregate irradiance as L_out += recurse_light. If it is false, then we set L_out = recurse_light in order to only get 
+  <b><u>Overview:</u></b> Within <i>est_radiance_global_illumination</i> we make a few changes. First, after the <i>L_out = zero_bounce(...)</i> contribution, we check to see if
+    <i>max_ray_depth</i> is > 0. If so, then we call <i>Vector3D recurse_light = at_least_one_bounce_radiance(r, isect)</i> to accumulate irradiance from at least one bounce. 
+    If <i>isAccumBounces</i> is true, then we aggregate irradiance as <i>L_out += recurse_light</i>. If it is false, then we set <i>L_out = recurse_light</i> in order to only get 
     the deepest bounce of light. <br><br>
 
-    <b><u>at_least_one_bounce_radiance:</u></b> First, we compute the contribution of the one bounce radiance as L_out = one_bounce_radiance(r, isect).
-    For the base case of the recursie, we now first check to see if r.depth + 1 == max_ray_depth (note that we add one because ray depth is initialized to 0). 
-    If we have indeed reached maximum depth, then we simplly return L_out. <br><br>
+    <b><u>at_least_one_bounce_radiance:</u></b> First, we compute the contribution of the one bounce radiance as <i>L_out = one_bounce_radiance(r, isect)</i>.
+    For the base case of the recursion, we now first check to see if <i>r.depth + 1 == max_ray_depth</i> (note that we add one because ray depth is initialized to 0). 
+    If we have indeed reached maximum depth, then we simplly return <i>L_out</i>. <br><br>
 
     If we have not yet reached maximum depth, then we move on to computing the contribution of further bounces. 
-    
-    TODO                                                                                                                                                    
-    
+    To do this, we first sample an incoming direction <i>w_in</i> for the direction of the next bounce along with its pdf by calling isect-&gt;sample_f(w_out, &w_in, &pdf).
+    Next, we use the sampled direction to instantiate a ray for simulating the next bounce as <i>Ray recurse_r = Ray(hit_p, o2w * w_in, INF_D)</i>, with the <i>max_t</i> of the ray set
+    to infinity since we are interested in testing if it hits anything at all in the scene regardless of distance. Additionally, we set <i>recurse_ray.min_t = EPS_F</i>
+    (to avoid collisions with primitive of origin) and increment the depth of our search by setting its depth <i>recurse_r.depth = r.depth + 1</i> (the depth of the input ray to the function + 1).
+    We now test to see if this ray hits any other primitive by instantiating a new Intersection object <i>recurse_isect</i> and calling <i>bvh-&gt;intersect(recurse_r, &recurse_isect)</i>.
+    <br><br>
+    If the recursive ray does not intersect with a primitive in the scene, then we simply don't add anything more to <i>L_out</i>. If it does intersect with a primitive, then we first
+    compute the contribution from that bounce's recursion as <i>L_i = at_least_one_bounce_radiance(recurse_r, recurse_isect)</i>, and then compute the cosine of the angle with the normal
+    as <i>costheta = dot(w_in, Vector3D(0.0, 0.0, 1.0))</i> since <i>w_in</i> is in object coordinates. 
+    We now compute the irradiance contribution from the recursion as <i>L_i = L_i * bsdf * costheta / pdf</i> and add it to the total irradiance as <i>L_out = L_out + L_i</i>.
+    <br><br>
+    Finally, after the recursion we conclude the method by returning <i>L_out</i> if <i>isAccumBounces</i> is true, or <i>L_i</i> if it is false (since we only want to keep the final 
+    bounce irradiance in this case). 
+    <br><br>
+    <b><u>Russian Roulette:</u></b> For Russian roulette we make a couple of simple modifications <i>at_least_one_bounce_radiance</i>. 
+    First, after the check for maximum depth is passed (i.e. not yet at max depth), we define a double <i>cpdf = 0.65</i> (representing 0.35 termination probability) 
+    and use the <i>coin_flip(cpdf)</i> method call to decide if we will recurse or not. If it is true, then we proceed as described above, only that 
+    we additionally divide <i>L_i</i> by <i>cpdf</i>.
   
   <h4 aligh="middle">Show some images rendered with global (direct and indirect) illumination. Use 1024 samples per pixel.</h4>
 
