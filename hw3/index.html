@@ -524,6 +524,8 @@ Below we present screenshots of rendering times for <i>beetle.dae</i> (1.1 MB, 7
     
   <h4 aligh="middle">For CBbunny.dae, compare rendered views with max_ray_depth set to 0, 1, 2, 3, 4, and 5(the -m flag). Use 1024 samples per pixel.</h4>
 
+  Below we show renders for <i>CBbunny.dae</i> with 1024 ray samples per pixel and maximum ray depths between 0 and 5 (with bounce accumulation on). 
+    
     <div align="middle">
   <table style="width=100%">
       <tr>
@@ -558,7 +560,17 @@ Below we present screenshots of rendering times for <i>beetle.dae</i> (1.1 MB, 7
     </tr>
   </table>
   </div>
-  
+
+<b><u>Comparison:</u></b> As noted earlier, we can see that for the direct light images (m=0 and m=1) we only get light that is either directly landing
+    on the camera from the light source or that has directly hit objects. Any region of the scene that is obstructed from the light source will be
+    completely dark in the direct lighting images. 
+    At the second bounce and later, we can now start to see color blending from the walls contributing to the irradiance of other regions of the scene
+    through indirect lighting. Additionally, at m=2 and beyond we can also see that light-obstructed regions now have some irradiance since they are now 
+    getting indirect lighting contributions from the rest of the scene. 
+    One trend we can observe with bounce irradiance accumulation is that the images also become progressively brighter, even if only marginally in some cases. 
+    This is because irradiance contribution from bounces is completely additive (i.e. not averaged), so the scene can only increase in brightness/illumination as the 
+    number of bounces increases. Lastly, we can also observe that shadows become progressively softer/lighter as more light comes into the region from subsequent bounces. 
+    
   <h4 aligh="middle">For CBbunny.dae, output the Russian Roulette rendering with max_ray_depth set to 0, 1, 2, 3, 4, and 100(the -m flag). Use 1024 samples per pixel.</h4>
 
     <div align="middle">
