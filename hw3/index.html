@@ -235,7 +235,8 @@ Below we present screenshots of rendering times for <i>beetle.dae</i> (1.1 MB, 7
   direction of any given solid angle will need to be divided by 2PI (because there are 2PI solid angles in a hemisphere). Further, the reflectance (or albedo) <i>r</i> of the diffuse material
   dictates how much light is relfected/absorbed by each color channel in the range [0,1], and must therefore be used to weight the light being emmitted in a direction. 
   Therefore, this means that the radiant intensity emmitted in a given solid angle direction will be <i>E(w) = r * L * PI / (2 * PI) = (r/PI) * L</i>. 
-  This means that the bsdf for a diffuse object will be the reflectance divided by pi, i.e. <i>f = r / PI</i>.
+  Because in the raytracing algorithm <i>L</i> will be represented by each sample estimate that we take, the <i>r/PI</i> term will be consumed by the brdf function 
+  <i>f = r / PI</i> which will allow for the sample summation to be a correct approximation. 
   <br><br>
   
   <b><u>Direct Hemisphere Sample:</u></b> In <i>estimate_direct_lighting_hemisphere</i> we define a Vector3D <i>L_out</i> which we use to represent the one bounce
