@@ -408,6 +408,10 @@ Below we present screenshots of rendering times for <i>beetle.dae</i> (1.1 MB, 7
   
   <h4 aligh="middle">Show some images rendered with global (direct and indirect) illumination. Use 1024 samples per pixel.</h4>
 
+  Below we show renders of <i>CBspheres.dae</i> and <i>CBbunny.dae</i> using either direct illumination or indirect illumination (in this case
+    including the contributions of direct illumination as well, i.e. the accumulation across all ray depths). Each render uses 16 light samples
+    and 1024 ray samples per pixel. 
+    
     <div align="middle">
   <table style="width=100%">
     <tr>
@@ -435,6 +439,9 @@ Below we present screenshots of rendering times for <i>beetle.dae</i> (1.1 MB, 7
   
   <h4 aligh="middle">Pick one scene and compare rendered views first with only direct illumination, then only indirect illumination. Use 1024 samples per pixel. (You will have to edit PathTracer::at_least_one_bounce_radiance(...) in your code to generate these views.)</h4>
 
+  Below we show renders of <i>CBbunny.dae</i> using either <i>only</i> direct illumination (i.e. light from m=0 and m=1), or using <i>only</i> indirect illumination
+      (i.e. light from m&gt;= 2). Every render uses 1024 ray samples per pixel. 
+      
     <div align="middle">
   <table style="width=100%">
       <tr>
@@ -449,7 +456,21 @@ Below we present screenshots of rendering times for <i>beetle.dae</i> (1.1 MB, 7
     </tr>
   </table>
   </div>
-  
+
+<b><u>Comparison:</u></b> In terms of general trends, we can observe that for most regions of the scene, a large proportion of the intensity of illumination 
+      is being contributed by the direct lighting, since it is a generally much brighter image than the indirect lighting image. 
+      This makes sense because light contribution decreases in intensity exponentially over bounces so the 0th and 1st 
+      bounce will have the strongest contributions. However, this is not true for every region in the scene, namely we can observe that regions that are obstructed
+      from the light source (e.g. such as much of the bunny's chest and viewer-facing lower side) can be completely dark. This is because direct lighting only accounts
+      for light that comes directly from the light, so anything that is obstructed from the light will have 0 direct light irradiance. 
+      In contrast, we can clearly see that dark regions in the direct light image do have some irradiance in the indirect light image, which is due to light bouncing
+      from other objects in the scene and landing on them. <br><br>
+      One other difference we can notice is that because the light is white, then in the direct light image the color of regions in the scene will be entirely 
+      dependent on the color properties of the color primitive being hit by the light (i.e. only regions on the left wall are red, and only regions on the right wall
+      are blue, the bunny is grey). In contrast, because indirect illumination allows for light to bounce between objects, their colors can blend more into other objects, 
+      such as can  be observed in the indirect image on the bunny's chest and back, 
+      which respectively are taking on more red and blue hues coming from the walls closest to them. 
+      
   <h4 aligh="middle">For CBbunny.dae, render the mth bounce of light with max_ray_depth set to 0, 1, 2, 3, 4, and 5 (the -m flag), and isAccumBounces=false. Explain in your writeup what you see for the 2nd and 3rd bounce of light, and how it contributes to the quality of the rendered image compared to rasterization. Use 1024 samples per pixel.</h4>
 
     <div align="middle">
