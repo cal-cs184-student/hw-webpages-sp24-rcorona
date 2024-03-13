@@ -283,6 +283,9 @@ Below we present screenshots of rendering times for <i>beetle.dae</i> (1.1 MB, 7
   Lastly, the contribution from this light is added as L_out += (L * bsdf * costheta) / pdf;. 
   
   <h4 align="middle">Show some images rendered with both implementations of the direct lighting function.</h4>
+
+  Below, we show images of <i>CBspheres_lambertian.dae</i> and <i>CBbunny.dae</i> both with hemisphere sampling and with light importance sampling. 
+  For each image, we use 64 sample rays per pixel and 32 light samples. Both sets of images use direct lighting only (m=1).  
     
     <div align="middle">
   <table style="width=100%">
@@ -311,6 +314,9 @@ Below we present screenshots of rendering times for <i>beetle.dae</i> (1.1 MB, 7
   
   <h4 align="middle">Focus on one particular scene with at least one area light and compare the noise levels in soft shadows when rendering with 1, 4, 16, and 64 light rays (the -l flag) and with 1 sample per pixel (the -s flag) using light sampling, not uniform hemisphere sampling.</h4>
 
+      Below we show images of <i>CBspheres_lambertian.dae</i> with 1, 4, 16, and 64 light rays during light sampling. 
+      Every image is rendered with one sample per pixel.
+      
     <div align="middle">
   <table style="width=100%">
     <tr>
@@ -335,9 +341,21 @@ Below we present screenshots of rendering times for <i>beetle.dae</i> (1.1 MB, 7
     </tr>
   </table>
   </div>
-  
+
+<b><u>Noise Level Comparison:</u></b> Generally speaking, we can observe that the rendered images become increasingly less noisy as the number of
+      light samples increases. Take for example the top-left image using only a single sample. In that image, we can observe that shadows are very
+      obviously grainy, with shadow boundaries being particularly grainy. This grain is due to only having a single light sample per pixel, because instead
+      of having a gradation in the shadow, shadows are treated as a binary decision in this case, which means that each pixel will either be completely black
+      or have a single unmuted color value. <br><br>
+      In contrast, we can observe the much less noisy variant using 64 samples (bottom-right). In this variant, each pixel gets 64 samples of light to average over, 
+      so the sampled irradiance will now be an average of shadow rays (which contribute 0 irradiance) and color rays (which are unobstructed). 
+      This averaging effect can be most clearly observed around shadow boundaries, where the shadow fades away much more gradually and uniformly as opposed to 
+      the single sample case. This general trend can be observed in both of the intermediate images with 4 and 16 samples as well. 
+      
   <h4 align="middle">Compare the results between uniform hemisphere sampling and lighting sampling in a one-paragraph analysis.</h4>
+
   
+      
   <h3 align="middle">Part 4: Global Illumination</h3>
   
   <h4 align="middle">Walk through your implementation of the indirect lighting function</h4>
