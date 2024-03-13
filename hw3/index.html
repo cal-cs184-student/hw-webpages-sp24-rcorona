@@ -230,7 +230,12 @@ Below we present screenshots of rendering times for <i>beetle.dae</i> (1.1 MB, 7
   or <i>estimate_direct_lighting_importance</i> if <i>direct_hemisphere_sample</i> is true or false, respectively. 
   <br><br>
 
-  <b><u>Diffuse BSDF:</u></b> TODO
+  <b><u>Diffuse BSDF:</u></b> For the computation in the <i>DiffuseBSDF::f</i>, we can first consider the fact from lecture that the total irradiance arriving at a point 
+  from a unifrom hemispherical light is <i>E = L * PI</i>. Because a diffuse surface scatters light equally in all directions, then the radiant intensity emmited in the 
+  direction of any given solid angle will need to be divided by 2PI (because there are 2PI solid angles in a hemisphere). Further, the reflectance (or albedo) <i>r</i> of the diffuse material
+  dictates how much light is relfected/absorbed by each color channel in the range [0,1], and must therefore be used to weight the light being emmitted in a direction. 
+  Therefore, this means that the radiant intensity emmitted in a given solid angle direction will be <i>E(w) = r * L * PI / (2 * PI) = (r/PI) * L</i>. 
+  This means that the bsdf for a diffuse object will be the reflectance divided by pi, i.e. <i>f = r / PI</i>.
   <br><br>
   
   <b><u>Direct Hemisphere Sample:</u></b> In <i>estimate_direct_lighting_hemisphere</i> we define a Vector3D <i>L_out</i> which we use to represent the one bounce
