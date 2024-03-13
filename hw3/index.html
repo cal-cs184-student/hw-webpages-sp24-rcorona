@@ -473,6 +473,8 @@ Below we present screenshots of rendering times for <i>beetle.dae</i> (1.1 MB, 7
       
   <h4 aligh="middle">For CBbunny.dae, render the mth bounce of light with max_ray_depth set to 0, 1, 2, 3, 4, and 5 (the -m flag), and isAccumBounces=false. Explain in your writeup what you see for the 2nd and 3rd bounce of light, and how it contributes to the quality of the rendered image compared to rasterization. Use 1024 samples per pixel.</h4>
 
+    Below we show renders of <i>CBbunny.dae</i> under ray depths of 0, 1, 2, 3, 4, and 5 without bounce accumulation. Each image uses 1024 sample rays per pixel. 
+    
     <div align="middle">
   <table style="width=100%">
       <tr>
@@ -507,7 +509,19 @@ Below we present screenshots of rendering times for <i>beetle.dae</i> (1.1 MB, 7
     </tr>
   </table>
   </div>
-  
+
+<b><u>Comparison:</u></b> By observing images with m=2 and m=3 (second row), we can notice a couple of contributions that indirect lighting makes which are not
+    directly possible to do with rasterization. Firstly, we can notice that in the two images we have a much more detailed scattering of light from objects onto
+    other objects. For example, we can see that the front and back of the bunny are red and blue, respectively, in both of the images due to light bouncing off 
+    of the walls and contributing to their irradiance. Second, we can also notice that certain regions which are completely dark in the direct light image (with m=1)
+    have some irradiance in the indirect light images (such as the bunny's chest and viewer-facing side), which is due to light bouncing from other objects into 
+    regions which are completely obstructed from the light source. <br>
+    These two contributions from indirect light can be contrasted with rasterization, which can only use local information contained in and around a primitive
+    to determine the color of the surface. Rasterization does not take into account contributions to color stemming from light bouncing around the scene, and thus
+    cannot properly simulate reflection and diffusion of light across the scene, so color bleeding of red and blue as can be observed in these renders would 
+    not be possible with rasterization. Additionally, completely dark regions in the direct light image would remain completely dark in images produced from 
+    rasterization since razterization also cannot include contributions from light bouncing into light-obstructed regions of the scene. 
+    
   <h4 aligh="middle">For CBbunny.dae, compare rendered views with max_ray_depth set to 0, 1, 2, 3, 4, and 5(the -m flag). Use 1024 samples per pixel.</h4>
 
     <div align="middle">
