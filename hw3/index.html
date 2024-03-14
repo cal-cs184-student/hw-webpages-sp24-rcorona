@@ -44,6 +44,10 @@ different regions of the scene. Although a pixel might have a single RGB value i
 we need to sample light coming into different points within that region in order to get an estimate of the irradiance. 
 A ray, or vector, originating from the origin of the camera and passing through a point in the pixel's region represents such an estimate. Because rays passing through different points in the region of the pixel may then intersect different
 portions of the scene, the radiance they contribute may be different, and an average over the radiance of various random rays coming into the sensor from across the pixel's region will provide an estimate of that pixel's true irradiance. 
+In order to generate rays, we first select a point in the world as the origin (i.e. the cameras location), as well as a location of the "image sensor", which will serve as the 2D region in 3D space where we will aggregate irradiance values
+  for coming in for every pixel. By convention, the sensor lies in the plane defined by Z=-1 (in the cameras coordinate system), so any ray that we sample will pass through a random point in the sensor's regions of (x, y, -1) and (x+1, y+1, -1).
+  Having sampled the direction of the ray in camera coordinates, we must now convert it to world coordinates so that we can test it for intersections with primitives in the scene. This is done by multiplying the direction vector
+  by the camera to world matrix, and translating the ray's origin to be the camera's origin in world coordinates. 
 <br><br>
 
 <b><u>Primitive Intersection:</u></b> Given a ray from the camera passing into the scene, we next sample its radiance contribution to a pixel by taking the radiance coming into the rays direction from the object(s) it intsersects with in the scene. 
