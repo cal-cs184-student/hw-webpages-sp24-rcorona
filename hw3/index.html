@@ -573,6 +573,9 @@ Below we present screenshots of rendering times for <i>beetle.dae</i> (1.1 MB, 7
     
   <h4 aligh="middle">For CBbunny.dae, output the Russian Roulette rendering with max_ray_depth set to 0, 1, 2, 3, 4, and 100(the -m flag). Use 1024 samples per pixel.</h4>
 
+  Below we show renders of <i>CBbunny.dae</i> with Russian roulette under different max ray depths. Here, we set the Russian roulette termination probability
+    to 0.35 in each bounce. Every render uses 1024 ray samples per pixel. 
+    
     <div align="middle">
   <table style="width=100%">
       <tr>
@@ -607,7 +610,12 @@ Below we present screenshots of rendering times for <i>beetle.dae</i> (1.1 MB, 7
     </tr>
   </table>
   </div>
-  
+
+<b><u>Comparison:</u></b> As can be observed, qualitatively the images above are comparable in quality and appearance to the images rendered without using Russian roulette. 
+    This is because Russian roulette is an unbiased estimator, and therefore we can keep a reliably estimate of irradiance while at the same time saving some cost in compute
+    by terminating certain paths early. Notice how the image rendered with m=100 is comparable in appearance to the m=5 image without Russian roulette. This is likely due to
+    most recursions terminating before they reach the 100th bounce as well as the the exponentially decaying nature of each bounce's contribution. 
+    
   <h4 aligh="middle">Pick one scene and compare rendered views with various sample-per-pixel rates, including at least 1, 2, 4, 8, 16, 64, and 1024. Use 4 light rays.</h4>
 
     <div align="middle">
