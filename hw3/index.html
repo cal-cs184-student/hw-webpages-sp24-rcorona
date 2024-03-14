@@ -618,6 +618,8 @@ Below we present screenshots of rendering times for <i>beetle.dae</i> (1.1 MB, 7
     
   <h4 aligh="middle">Pick one scene and compare rendered views with various sample-per-pixel rates, including at least 1, 2, 4, 8, 16, 64, and 1024. Use 4 light rays.</h4>
 
+  Below we show renders for <i>CBbunny.dae</i> using varying numbers of ray samples per pixel, each with 4 light rays and with m=5. 
+    
     <div align="middle">
   <table style="width=100%">
       <tr>
@@ -659,6 +661,18 @@ Below we present screenshots of rendering times for <i>beetle.dae</i> (1.1 MB, 7
   </table>
   </div>
 
+<b><u>Comparison:</u></b> As a general trend, we can observe that images become increasingly noisy as we decrease the number of samples per pixel. 
+    One major difference to notice between this experiment and the experiment varying the number of <i>light</i> samples is that the noise in these images 
+    does not result in exclusively dark pixels, but rather more generally incorrect coloring of the pixels. For example, if we look at the image rendered with 
+    s=1, we can notice that there is red and blue noise scattered throughout the scene. This is because we are accumulating bounces from only a single path, and 
+    therefore can have pixels whose illuminance will be heavily biased by the objects the path traced through (such as the red and blue walls). 
+    In other words, this noise is multi-colored because it is more dependent on objects in the path, and not as dependent on whether a given point on an object is 
+    obstructed from the light or not (since we have indirect lighting with m=5 here). 
+    As we get more samples, not only is the noise reduced, but (qualitatively) the variance across noisy pixels is reduced, with noise attaining a more grayish
+    color as opposed to running a larger color gamut. This is because even though pixels are still noisy due to low samples in the first few images, their estimates
+    themselves are now going to be averaged over multiple samples rather than just one, so even though the color might still be off from its true value for some
+    pixels, the range of values these incorrect values take on will be smaller.  
+    
  <h4 aligh="middle">Part 5: Adaptive Sampling</h4>
 
    <h4 aligh="middle">Explain adaptive sampling. Walk through your implementation of the adaptive sampling.</h4>
