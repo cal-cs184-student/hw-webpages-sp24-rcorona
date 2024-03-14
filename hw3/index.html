@@ -32,11 +32,39 @@
 
 <h2 align="middle">Overview</h2>
 
-TODO
+In this project, we learned about and implemented pieces of the ray tracing pipeline. Ray tracing allows us to compute pixel values as a function 
+  of interactions of light between different objects in the scene, rather than by just operating over local primitive properties as is done in rasterization. 
+  By modeling the dynamics of light bouncing around a scene, we can use ray tracing to model properties such as reflection and diffusion of light which allows 
+  for objects to mirror each other, distort their images, and to blend colors from each other. 
+<br><br>
+  In this project we worked on the following components of the ray tracing pipeline: <br><br>
+  1. Ray sampling, where we generate a ray from the camera to "shoot" into the scene to sample incoming irradiane into pixels.<br><br>
+  
+  2. Ray intersection with objects, where given a sampled ray shot from the camera, we check to see which primitives in the scene it intersected with 
+  (and which intersections are valid within provided constraints such as the camera frustom). <br><br>
+
+  3. Bounding Volume Hierarchy acceleration, where we spatially organize primitives in the scene within a binary tree, which allows us to perform intersection 
+  tests between rays and scenes in logarithmic time (with respect to the number of primitives) rather than linear time. This is because we can prune parts of the tree
+  by simply checking the bounding box of entire branches and pruning if there is no possibility of intersection with any of its children. <br><br>
+
+  4. Bidirectional Reflectance Distribution Function (BRDF), a function which is material specific and which describes the distribution of how a material will
+  scatter incoming light into different directions across a hemisphere. In this project we only implemented a BRDF for diffuse objects, which scatter light
+  uniformly in all directions. 
+  
+  5. Direct Illumination, where we collect irradiane on a pixel from light being contributed either directly by a light or from a single bounce of light
+  reaching the camera from an object. Within direct illumination we also compared two irradiance sampling strategies, uniform sampling across a hemisphere
+  and importance sampling over lights in the scene. <br><br>
+
+  6. Indirect Illumination, where we additionally add irradiance coming in from recursive bounces of light around the scene. This allows for light to flow into 
+  regions that might be completely obstructed from direct light, as well as allows for color blending and reflections to happen between objects. We additionally implemented
+  a Russian Roulette estimator, which is an unbiased estimator which allows for the random early termination of raytracing paths.<br><br>
+
+  7. Adaptive sampling, a technique which is used to dynamically adapt the number of ray samples collected per pixel based on confidence intervals around convergence of the estimate. 
+  Given a maximal number of samples, adaptive sampling allows for early termination of the sampling process if the estimate can be confirmed to lie within a given tolerance threshold
+  percentage from the range of values in a given confidence interval for the estimate.<br><br>
+  
 
 <h3 align="middle">Part 1: Ray Generation and Scene Intersection</h3>
-
-<b>TODO</b>: We're missing some part of the pipeline explanation here! At least missing talk about camera --> world matrix and instantiation of rays? 
   
 <p>
 <b><u>Ray Generation:</u></b> In the ray generation part of the pipeline, we are interested in estimating the irradiance of a pixel, i.e. its rendered value in the image, by taking samples of light that might come into the pixel from 
