@@ -65,6 +65,9 @@ In this project, we learned about and implemented pieces of the ray tracing pipe
   
 
 <h3 align="middle">Part 1: Ray Generation and Scene Intersection</h3>
+
+
+  <h4 align="middle">Walk through the ray generation and primitive intersection parts of the rendering pipeline.</h4>
   
 <p>
 <b><u>Ray Generation:</u></b> In the ray generation part of the pipeline, we are interested in estimating the irradiance of a pixel, i.e. its rendered value in the image, by taking samples of light that might come into the pixel from 
@@ -78,6 +81,9 @@ In order to generate rays, we first select a point in the world as the origin (i
   by the camera to world matrix, and translating the ray's origin to be the camera's origin in world coordinates. 
 <br><br>
 
+
+<h4 align="middle">Explain the triangle intersection algorithm you implemented in your own words.</h4>
+  
 <b><u>Primitive Intersection:</u></b> Given a ray from the camera passing into the scene, we next sample its radiance contribution to a pixel by taking the radiance coming into the rays direction from the object(s) it intsersects with in the scene. 
 Therefore, in order to determine which point(s) in the scene will contribute to a ray's radiance, we need to perform intersection tests to see which object(s) the ray will collide with. 
 In Part I we only consider intersection with triangle or sphere primitives in the scene. <br><br>
@@ -101,6 +107,8 @@ This line test works because a division of line tests works out to be equivalent
 i.e. the proportion represents the percentage of how close the point is from the third vertex, and hence will always be in [0, 1]. 
 </p>
 
+  <h4 align="middle">Show images with normal shading for a few small .dae files.</h4>
+  
 <p>
   <b><u>Results:</u></b> Below we can see four images that were rendered with the code from Part I: CBcoil.dae, CBgems.dae, bench.dae, and banana.dae. 
 </p>
@@ -132,6 +140,8 @@ i.e. the proportion represents the percentage of how close the point is from the
   
 <h3 align="middle">Part 2: Bounding Volume Hierarchy</h3>
 
+  <h4 align="middle">Walk through your BVH construction algorithm. Explain the heuristic you chose for picking the splitting point.</h4>
+  
 <p>
 <b><u>BVH Construction Algorithm:</u></b> For BVH construction, I first begin by creating a bounding box object to represent the node and iterating over all primitives from <i>start</i> to <i>end</i>.
   Through the iteration, I expand the node's bounding box by each primitive's bounding box and I also generate a vector&lt;Vector3D&gt; where I push back all of the primitive centroids and 
@@ -156,6 +166,8 @@ i.e. the proportion represents the percentage of how close the point is from the
     box extents, we can maximimize the amount of space that is excluded when a branch is pruned during ray intersection search, which will hopefully lead to greater compute savings.  
 </p>
 
+  <h4 align="middle">Show images with normal shading for a few large .dae files that you can only render with BVH acceleration.</h4>
+  
 <p>
 <b><u>Results with Normal Shading:</u></b> Below we visualize renderings for <i>wall-e.dae</i> (36.5MB), <i>dragon.dae</i> (8.7MB), <i>CBlucy.dae</i> (18.3MB), and <i>blob.dae</i> (29.1MB), which are all relatively larger files which would have taken much longer to render without BVH
   acceleration: 
@@ -187,6 +199,7 @@ i.e. the proportion represents the percentage of how close the point is from the
 </p>
 
 <h4 align="middle"> Compare rendering times on a few scenes with moderately complex geometries with and without BVH acceleration. Present your results in a one-paragraph analysis.</h4>
+  
 Below we present screenshots of rendering times for <i>beetle.dae</i> (1.1 MB, 7558 primitives), <i>peter.dae</i> (2.7 MB, 40018 primitives), <i>bunny.dae</i> (2.2 MB, 33696 primitives), and <i>CBbunny.dae</i> (1.8 MB, 28588 primitives), all of which are files with moderately complex geometries 
   (single digit Megabytes in size). 
   On the left side we can see the runtime <b>without</b> bvh acceleration, and on the right we can see runtime <b>with</b> bvh acceleration. 
