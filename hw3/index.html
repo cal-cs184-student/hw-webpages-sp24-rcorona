@@ -38,7 +38,7 @@ In this project, we learned about and implemented pieces of the ray tracing pipe
   for objects to mirror each other, distort their images, and to blend colors from each other. 
 <br><br>
   In this project we worked on the following components of the ray tracing pipeline: <br><br>
-  1. Ray sampling, where we generate a ray from the camera to "shoot" into the scene to sample incoming irradiane into pixels.<br><br>
+  1. Ray sampling, where we generate a ray from the camera to "shoot" into the scene to sample incoming irradiance into pixels.<br><br>
   
   2. Ray intersection with objects, where given a sampled ray shot from the camera, we check to see which primitives in the scene it intersected with 
   (and which intersections are valid within provided constraints such as the camera frustom). <br><br>
@@ -51,7 +51,7 @@ In this project, we learned about and implemented pieces of the ray tracing pipe
   scatter incoming light into different directions across a hemisphere. In this project we only implemented a BRDF for diffuse objects, which scatter light
   uniformly in all directions. 
   
-  5. Direct Illumination, where we collect irradiane on a pixel from light being contributed either directly by a light or from a single bounce of light
+  5. Direct Illumination, where we collect irradiance on a pixel from light being contributed either directly by a light or from a single bounce of light
   reaching the camera from an object. Within direct illumination we also compared two irradiance sampling strategies, uniform sampling across a hemisphere
   and importance sampling over lights in the scene. <br><br>
 
@@ -84,7 +84,7 @@ In order to generate rays, we first select a point in the world as the origin (i
 
 <h4 align="middle">Explain the triangle intersection algorithm you implemented in your own words.</h4>
   
-<b><u>Primitive Intersection:</u></b> Given a ray from the camera passing into the scene, we next sample its radiance contribution to a pixel by taking the radiance coming into the rays direction from the object(s) it intsersects with in the scene. 
+<b><u>Primitive Intersection:</u></b> Given a ray from the camera passing into the scene, we next sample its radiance contribution to a pixel by taking the radiance coming into the rays direction from the object(s) it intersects with in the scene. 
 Therefore, in order to determine which point(s) in the scene will contribute to a ray's radiance, we need to perform intersection tests to see which object(s) the ray will collide with. 
 In Part I we only consider intersection with triangle or sphere primitives in the scene. <br><br>
 For a sphere we can directly solve for the intersection point(s) of the ray analytically by solving a quadratic equation -- if the discriminant of the quadratic is non-negative, then the quadratic has real root(s) which correspond to the
@@ -102,7 +102,7 @@ The normal vector is obtained by projecting one of the two other edges onto the 
 
 If all three line tests return a dot product >= 0, then the point is determined to lie within the triangle. The isect is then filled in with the intersection parameter t, a pointer to the triangle, the bsdf function of the triangle, and its normal. 
 To compute the normal vector for the intersection point, we interpolate the normals from the triangle vertices using barycentric coordinates. 
-The barycentric coordiantes are obtainted by taking the proportion of the line test from an edge with the intersection point and the line test from that same edge and the triangle vertex that is not on that edge. 
+The barycentric coordinates are obtained by taking the proportion of the line test from an edge with the intersection point and the line test from that same edge and the triangle vertex that is not on that edge. 
 This line test works because a division of line tests works out to be equivalent to the proportion of the projections of each of the two vectors obtained by subtracting a triangle vertex on the line from the point being tested, 
 i.e. the proportion represents the percentage of how close the point is from the third vertex, and hence will always be in [0, 1]. 
 </p>
@@ -163,7 +163,7 @@ i.e. the proportion represents the percentage of how close the point is from the
     <i>construct_bvh(right_prims.begn(), right_prims.end(), max_leaf_size)</i>.<br>
     <b><u>Heuristic Explanation:</u></b> The intuition behind this heuristic is that splitting at the mean location on the dimension with the highest centroid variance 
     will likely lead to the two branches with the largest extents in the sizes of their resulting bounding boxes. By maximizing the expected sizes of the two branches' bounding 
-    box extents, we can maximimize the amount of space that is excluded when a branch is pruned during ray intersection search, which will hopefully lead to greater compute savings.  
+    box extents, we can maximize the amount of space that is excluded when a branch is pruned during ray intersection search, which will hopefully lead to greater compute savings.  
 </p>
 
   <h4 align="middle">Show images with normal shading for a few large .dae files that you can only render with BVH acceleration.</h4>
@@ -267,19 +267,19 @@ Below we present screenshots of rendering times for <i>beetle.dae</i> (1.1 MB, 7
   <h4 align="middle">Walk through both implementations of the direct lighting function.</h4>
 
   <b><u>Overview:</u></b> First, in <i>est_radiance_global_illumination</i> we will collect all of the summed irradiance into a Vector3D variable <i>L_out</i>. 
-  L_out starts as a 0 vector, and we first check to see if the queried ray interesects with anything in the scene by calling the bvh <i>intersect</i> method.
+  L_out starts as a 0 vector, and we first check to see if the queried ray intersects with anything in the scene by calling the bvh <i>intersect</i> method.
   If there is an intersection, then we first add the irradiance contribution from <i>zero_bounce_radiance</i>, which itself simply returns the emission from the bsdf contained by 
   the isect data structure. <br><br>
 
-  Next we add the irradiance contribution comptued with <i>one_bounce_radiance</i>, which itself calls either <i>estimate_direct_lighting_hemisphere</i>
+  Next we add the irradiance contribution computed with <i>one_bounce_radiance</i>, which itself calls either <i>estimate_direct_lighting_hemisphere</i>
   or <i>estimate_direct_lighting_importance</i> if <i>direct_hemisphere_sample</i> is true or false, respectively. 
   <br><br>
 
   <b><u>Diffuse BSDF:</u></b> For the computation in the <i>DiffuseBSDF::f</i>, we can first consider the fact from lecture that the total irradiance arriving at a point 
-  from a unifrom hemispherical light is <i>E = L * PI</i>. Because a diffuse surface scatters light equally in all directions, then the radiant intensity emmited in the 
+  from a uniform hemispherical light is <i>E = L * PI</i>. Because a diffuse surface scatters light equally in all directions, then the radiant intensity emited in the 
   direction of any given solid angle will need to be divided by 2PI (because there are 2PI solid angles in a hemisphere). Further, the reflectance (or albedo) <i>r</i> of the diffuse material
-  dictates how much light is relfected/absorbed by each color channel in the range [0,1], and must therefore be used to weight the light being emmitted in a direction. 
-  Therefore, this means that the radiant intensity emmitted in a given solid angle direction will be <i>E(w) = r * L * PI / (2 * PI) = (r/PI) * L</i>. 
+  dictates how much light is reflected/absorbed by each color channel in the range [0,1], and must therefore be used to weight the light being emitted in a direction. 
+  Therefore, this means that the radiant intensity emitted in a given solid angle direction will be <i>E(w) = r * L * PI / (2 * PI) = (r/PI) * L</i>. 
   Because in the raytracing algorithm <i>L</i> will be represented by each sample estimate that we take, the <i>r/PI</i> term will be consumed by the brdf function 
   <i>f = r / PI</i> which will allow for the sample summation to be a correct approximation. 
   <br><br>
@@ -429,7 +429,7 @@ Below we present screenshots of rendering times for <i>beetle.dae</i> (1.1 MB, 7
 
     <b><u>at_least_one_bounce_radiance:</u></b> First, we compute the contribution of the one bounce radiance as <i>L_out = one_bounce_radiance(r, isect)</i>.
     For the base case of the recursion, we now first check to see if <i>r.depth + 1 == max_ray_depth</i> (note that we add one because ray depth is initialized to 0). 
-    If we have indeed reached maximum depth, then we simplly return <i>L_out</i>. <br><br>
+    If we have indeed reached maximum depth, then we simply return <i>L_out</i>. <br><br>
 
     If we have not yet reached maximum depth, then we move on to computing the contribution of further bounces. 
     To do this, we first sample an incoming direction <i>w_in</i> for the direction of the next bounce along with its pdf by calling isect-&gt;sample_f(w_out, &w_in, &pdf).
@@ -565,7 +565,7 @@ Below we present screenshots of rendering times for <i>beetle.dae</i> (1.1 MB, 7
     to determine the color of the surface. Rasterization does not take into account contributions to color stemming from light bouncing around the scene, and thus
     cannot properly simulate reflection and diffusion of light across the scene, so color bleeding of red and blue as can be observed in these renders would 
     not be possible with rasterization. Additionally, completely dark regions in the direct light image would remain completely dark in images produced from 
-    rasterization since razterization also cannot include contributions from light bouncing into light-obstructed regions of the scene. 
+    rasterization since rasterization also cannot include contributions from light bouncing into light-obstructed regions of the scene. 
     
   <h4 align="middle">For CBbunny.dae, compare rendered views with max_ray_depth set to 0, 1, 2, 3, 4, and 5(the -m flag). Use 1024 samples per pixel.</h4>
 
@@ -788,7 +788,7 @@ Below we present screenshots of rendering times for <i>beetle.dae</i> (1.1 MB, 7
         the borders of shadows (since some rays will contribute light, others not), as well as along edges of objects where the normals of reflections will
         change more drastically. 
 
-        For example, in <i>bench.dae</i> we can see that the highest rates of chane are along the side of the bench, which is perpendicular to the ground and will 
+        For example, in <i>bench.dae</i> we can see that the highest rates of change are along the side of the bench, which is perpendicular to the ground and will 
         have high variance due light hitting it from floor bounces (or not), as well as the ridges of the cushion, which will have higher variance than the flatter 
         parts of the cushion due to the variance in normals in that region. 
         As an example of shadows, we can see how the shadows around the bunny in <i>CBbunny.dae</i> and spheres in <i>CBspheres.dae</i> have a generally higher sample
