@@ -213,7 +213,7 @@
             <figcaption>ks = 10</figcaption>
           </td>
           <td>
-            <img src="images/part2_ks_100.png.png" align="middle" width="500px" />
+            <img src="images/part2_ks_100.png" align="middle" width="500px" />
             <figcaption>ks = 100</figcaption>
           </td>
         </tr>
@@ -240,12 +240,62 @@
       </table>
     </div>
 
+  <p>
   Here we see screenshots of the final resting position of <i>pinned2.json</i> with the default parameters, only varying <i>ks</i> in multiples of 10. 
   As we can see, as the spring constant magnitude increases, the structural forces maintaining the integrity of the cloth are increasingly stronger against 
   gravity, causing the cloth to sag less and less. 
   This trend is observed because each point mass will stop accelerating downwards as soon as the vertical forces from the springs it belongs to are equal in 
   value to the force from gravity. 
   As the spring constant increases, the length of the spring required to cancel out the gravitational force will be lower, causing the observed reduction in sag. 
+  </p>
+
+    <div align="middle">
+      <table style="width:100%">
+        <tr align="center">
+          <td>
+            <img src="images/part2_dm_0.png" align="middle" width="500px" />
+            <figcaption>dm = 0.0%</figcaption>
+          </td>
+          <td>
+            <img src="images/part2_dm_05.png" align="middle" width="500px" />
+            <figcaption>dm = 0.05%</figcaption>
+          </td>
+        </tr>
+        <tr align="center">
+          <td>
+            <img src="images/part2_dm_1.png" align="middle" width="500px" />
+            <figcaption>dm = 0.1%</figcaption>
+          </td>
+            <td>
+            <img src="images/part2_dm_2.png" align="middle" width="500px" />
+            <figcaption>dm = 0.2%</figcaption>
+          </td>
+        </tr>
+        <tr align="center">
+          <td>
+            <img src="images/part2_dm_4.png" align="middle" width="500px" />
+            <figcaption>dm = 0.4%</figcaption>
+          </td>
+            <td>
+            <img src="images/part2_dm_8.png" align="middle" width="500px" />
+            <figcaption>dm = 0.8%</figcaption>
+          </td>
+        </tr>
+      </table>
+    </div>  
+
+  <p>
+  Here we can see images of <i>pinned2.json</i> with default parameters and <i>damping</i> varied in multiples of 2 from 0.0% to 0.8%. 
+  The screenshots are taken from the side in order to show how the magnitude of oscillations are affected by varying damping.
+  The screenshots are captured by stepping through the simulation and stopping as soon as the cloth appears to reach its highest maximum altitude
+    after the first swing back around after falling to the botto. 
+  As damping is lowered, the cloth experiences greater velocities over time, which results in a higher maximum altitude reached as the cloth swings 
+  back around the first time after reaching its lowest point. 
+  This is observed because lower damping allows for the cloth to reach a higher maximum velocity once it reaches the bottom of its trajectory. 
+    A higher maximum velocity results in the point masses stretching further down before the spring force begins to pull them back up vertically. 
+    Because they end up reaching a lower point, the acceleration from the spring forces on the way back up will be higher, causing it to experience greater
+    vertical velocity upwards which results in the higher maximum altitude observed. 
+  </p>
   
     <blockquote><b>
     Show us a screenshot of your shaded cloth from <i>scene/pinned4.json</i> in its final resting state! 
