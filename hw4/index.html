@@ -100,7 +100,7 @@
           </td>
           <td>
             <img src="images/part1_zoomed_in.png" align="middle" width="300vw" />
-            <figcaption>Zoomed out view.</figcaption>
+            <figcaption>Zoomed in view.</figcaption>
           </td>
           <td>
         </tr>
@@ -153,7 +153,12 @@
     </b></blockquote>
 
     <p>
-      TODO
+    When the ks constant is very high, the forces maintaining the structural constraints between pairs of springs is higher which causes them to bend and stretch much 
+    less as the cloth falls over time. 
+    If the ks constant is lower, then the forces from spring constraints is lower, causing the springs to stretch and bend more as the cloth falls. 
+    In terms of final resting position, the magnitude of the spring forces will interact differently with gravity (whose magnitude is always the same). 
+    Higher spring constants will cause the cloth to remain more rigid/taught against gravity, causing the cloth to sag much less. 
+    In contrast, lower spring constants will cause the spring forces to lose out to gravity, causing the cloth to sag and bend much more. 
     </p>
 
 
@@ -164,7 +169,12 @@
     </b></blockquote>
 
     <p>
-      TODO
+      Higher values of density entails higher mass for each point mass and therefore a greater acceleration from gravitational force being enacted on each point. 
+      Therefore, higher values will result in both the cloth falling faster (proportional to the increase in mass) as well as will cause the final resting position of the 
+      cloth to sag more since the amount of spring force needed to cancel out the gravitational force will higher (and therefore will require longer spring lengths in order
+      to cancel out gravity). 
+      Lower density values will cause a lower gravitational acceleration, causing the cloth to fall more slowly. 
+      Additionally, the cloth will sag less at its final resting position since the spring force required to cancel it out (and therefore the spring length) will be lower. 
     </p>
     
     
@@ -175,7 +185,14 @@
     </b></blockquote>
 
     <p>
-      TODO
+    A higher damping value means a higher loss of kinetic energy as the cloth moves. 
+    In other words, this means that the velocity of the point masses at any given time step is heavily throttled. 
+    Qualitatively, this results in the cloth falling more slowly given it's throttling of velocity. 
+    Additionally, once the cloth falls to a point where the springs start to pull back on it, a higher damping value will result in a 
+    a lower amount of oscillation as the cloth converges to its final resting position. 
+    Conversely, a lower damping value will result in greater velocity values, causing the cloth to fall faster. 
+    Once the cloth falls to a point where the springs start to pull back on it, the oscillations before it converges to its final resting spot 
+      will not only last longer but will also have a higher magnitude. 
     </p>
 
 
@@ -185,28 +202,44 @@
       and show us some screenshots of those interesting differences and describe when they occur.
       </small>
     </b></blockquote>
-  
+
+    <b><u>Spring Constant:</u></b>
+
     <div align="middle">
       <table style="width:100%">
         <tr align="center">
           <td>
-            <img src="images/t2-interesting-difference1.png" align="middle" width="400vw" />
-            <figcaption>Default Parameters</figcaption>
+            <img src="images/part2_ks_10.png" align="middle" width="500px" />
+            <figcaption>ks = 10</figcaption>
           </td>
           <td>
-            <img src="images/t2-interesting-difference2.png" align="middle" width="400vw" />
-            <figcaption>Default Parameters</figcaption>
+            <img src="images/part2_ks_100.png.png" align="middle" width="500px" />
+            <figcaption>ks = 100</figcaption>
           </td>
+        </tr>
+        <tr align="center">
           <td>
+            <img src="images/part2_ks_1000.png" align="middle" width="500px" />
+            <figcaption>ks = 1000</figcaption>
+          </td>
+            <td>
+            <img src="images/part2_ks_10000.png" align="middle" width="500px" />
+            <figcaption>ks = 10000</figcaption>
+          </td>
+        </tr>
+        <tr align="center">
+          <td>
+            <img src="images/part2_ks_100000.png" align="middle" width="500px" />
+            <figcaption>ks = 100000</figcaption>
+          </td>
+            <td>
+            <img src="images/part2_ks_1000000.png" align="middle" width="500px" />
+            <figcaption>ks = 1000000</figcaption>
+          </td>
         </tr>
       </table>
     </div>
   
-    <p>
-      TODO
-    </p>
-
-
     <blockquote><b>
     Show us a screenshot of your shaded cloth from <i>scene/pinned4.json</i> in its final resting state! 
     If you choose to use different parameters than the default ones, please list them.
