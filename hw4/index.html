@@ -492,6 +492,23 @@
         </tr>
     </div>
 
+    <p><b><u>Density:</u></b></p>
+
+  Above we can see images of the cloth falling in on itself in <i>selfCollision.json</i> with values of <i>density = 1</i> and
+  <i>density = 50</i>, with all other parameters taking on default values. 
+  Observations are similar to when the spring constant is varied, however the relationship is inverted. 
+  A higher value of density will lead to a more crumpled cloth, whereas a lower density will lead to a cloth
+  which maintains its structural integrity much better. 
+
+  <p>
+
+    These examples show the inverted relationship between the spring constant and the density of the cloth.
+    The higher the spring constant is proportionally to the density, the better the cloth will keep its structural integrity and vice versa. 
+    Each bend in the cloth as it falls in on itself can be thought of as a point where the gravitational force won out to the spring force, and so the cloth
+    must bend in one of two directions in order to satisfy the accelerations under structural constraints. 
+    The stronger the gravitational force is proportionally to the spring force, the more points like this that there will be, which will result in 
+    more ripples being observed in the cloth. 
+  </p>
 
 
   <a href="https://cs184.eecs.berkeley.edu/sp23/docs/proj4-part-5">
