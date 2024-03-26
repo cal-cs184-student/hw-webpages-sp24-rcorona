@@ -449,7 +449,7 @@
       
       and describe with words and screenshots how they affect the behavior of the cloth as it falls on itself.
     </b></blockquote>
-
+  
     <div align="middle">
       <table style="width:100%">
         <tr align="center">
@@ -476,6 +476,18 @@
       </table>
     </div>
 
+
+  <p><b><u>Spring constant:</u></b></p>
+
+  Above we can see images of the cloth falling in on itself in <i>selfCollision.json</i> with values of <i>ks = 1,000</i>
+  and <i>ks = 7,500</i>, using default parameters otherwise. 
+  As we can observe, the cloth is much more rigid when the spring constant is higher, since it folds in on itself in larger twists rather 
+  than many ripples as can be seen with the smaller value. 
+  As observed in sections prior, a larger spring constant will make the cloth more rigid since the structural integrity of the spring system 
+  will be better preserved. 
+  The lowered proclivity towards bending will result in only having a small number of points where the cloth bends under gravity, since in general 
+  the cloth will have a larger bias towards staying upright (even though it will eventually still fall flat). 
+  
     <p>
       TODO
     </p>
