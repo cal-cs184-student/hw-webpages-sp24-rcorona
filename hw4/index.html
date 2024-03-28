@@ -552,7 +552,21 @@
     </b></blockquote>
 
     <p>
-      TODO
+      The Blinn-Phong shading model is a formulation for simulating the illumination contributed by light hitting a surface. 
+      It consists of four main components, the <b>emissive</b>, <b>diffuse</b>, <b>ambient</b>, and <b>specular</b> components. 
+      Emissive light represents light being emitted by the surface itself, such as when the surface represents a light (the cloth in the simulator has no emissive component). 
+      Diffuse light represents light that is scattered uniformly in all directions after hitting the surface, therefore the contribution of this component is independent of viewing direction.
+      However, the intensity of the diffuse light is dependent on the direction of the light relative to the surface normal, and will be attenuated by the angle between the normal and
+      the light direction based on Lambert's cosine law. 
+      Ambient light is meant to simulate contributions from indirect or global lighting in the scene, since shaders cannot simulate the dynamics of light bouncing 
+      around a scene as is done in ray tracing. Ambient light is not affected by viewing direction or by the direction of any light. 
+      Specular light represents light that is reflected in reflective direction from the light source, and is meant to simulate how reflective a material is. 
+      The exponent parameter in the specular light component formula can be used to tune the effective solid angle through which light is scattered around the reflective direction. 
+      The intensity of the specular component is also affected by Lambert's Cosine Law, but instead of computing the angle between the surface normal and the light direction, the angle is 
+      computed between the normal and the bisecting vector between the viewing direction and the light direction (this is done in part to avoid numerical issues with angles greater 
+      than 90 degrees which would drive the specular component to 0 if computing the dot product between the reflectance direction and the viewing direction as is done in Phong shading). 
+      <br>
+      <br> 
     </p>
 
     <div align="middle">
