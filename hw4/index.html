@@ -664,7 +664,17 @@
     </div>
 
     <p>
-      TODO
+      <b><u>Bump Mapping:</u></b> Bump mapping modifies fragment normal vectors proportional to the local change in intensity in the height map function with respect to 
+      changes in the uv coordinates of the fragment. 
+      More precisely, areas of little/no change will have no modification (i.e. the normal vector will remain at (0, 0, -1)), and areas of high change will have the normal vector "squashed"
+      in the xy plane (in object coordinates). For every change (DU, DV), there will be a proportional (but opposite) modification to the normal for a change (-DU, -DV). 
+      This property results in the distribution of modified normals to interact with light in the scene such that the pattern in the height map appears. 
+      This can be observed in the rendered images here by seeing how for each polka dot on the height map there is one side of the rim which has a very high intensity and the opposite side
+      of the rim will have very low intensity (i.e. be completely dark). 
+      <br><br>
+      <b><u>Displacement Mapping:</u></b> Displacement mapping does not change the normals itself, so the interaction between any given point and the lights in the scene will be the same, 
+      however it does change the lcoation 
+      
     </p>
 
 
