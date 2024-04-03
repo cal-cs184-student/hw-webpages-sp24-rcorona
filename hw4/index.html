@@ -76,7 +76,36 @@
   <div>
     <h2 align="middle">Overview</h2>
     <p>Give a high-level overview of what you implemented in this project. Think about what you've built as a whole. Share your thoughts on what interesting things you've learned from completing the project.</p>
-    TODO
+
+    In this project we implemented a simulation of cloth based on a point mass spring system. Specifically, we worked on the following components: <br><br>
+
+    1. Instantiated a spring system to represent the cloth based on 3 types of constraints between pairs of point masses, sturctural, shearing, and bending constraints. 
+    Structural constraints define springs between vertical and horizontal pairs of point masses.  
+    Shearing constraints define springs between diagonal pairs of point masses. 
+    Bending constraints define constraints between pairs of point masses two spaces away from each other. 
+    <br><br>
+
+    2. We implemented point mass location updates based on two main types of forces: (1) The force of gravity acting on each point mass, and (2)
+    the force of the springs acting on pairs of point masses in order to enforce structural integrity in the cloth. 
+    Updates were done using Verlet numerical integration. Additionally, point masses were not allowed to stray further than 10 percent 
+    of the spring length in order to better enforce structural integrity of the cloth. <br><br>
+
+    3. We implemented methods for updating point mass locations based on collision with spheres and planes. 
+    In both cases, for each point mass it was determined if the point mass crossed over the object boundary at any given time step. 
+    For any point mass crossing, its position was updated to be some small delta away from the objects surface in the direction of the crossing. 
+    This allows for the cloth to rest on objects it intersects with as well as prevent them from clipping through them. 
+    <br><br>
+
+    4. We implemented cloth self-collision to prevent the cloth from clipping through itself. 
+    This was implemented efficiently through a hashing mechanism. Similar to boudning volumes from earlier in the class, 
+    instead of checking every pair of point masses collision, only pairs within the same region in space (defined by 
+    a volume subdivision of the cloth) would be checked against each other. 
+    By averaging the correction between all collisions for a given point mass, self-collision can be properly simulated. 
+    <br><br>
+
+    5. Finally, we learned how to implement vertex and fragment shaders for performing different types of shading on cloth scenes. 
+    
+    
   </div>
 
   <a href="https://cs184.eecs.berkeley.edu/sp23/docs/proj4-part-1">
