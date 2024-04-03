@@ -710,32 +710,35 @@
       <b><u>Bump Mapping:</u></b> Bump mapping modifies fragment normal vectors proportional to the local change in intensity in the height map function with respect to 
       changes in the uv coordinates of the fragment. 
       More precisely, areas of little/no change will have no modification (i.e. the normal vector will remain at (0, 0, -1)), and areas of high change will have the normal vector "squashed"
-      in the xy plane (in object coordinates). For every change (DU, DV), there will be a proportional (but opposite) modification to the normal for a change (-DU, -DV). 
-      This property results in the distribution of modified normals to interact with light in the scene such that the pattern in the height map appears. 
+      in the xy plane (in object coordinates). For most changes (DU, DV), there will be a proportional (but opposite) modification to the normal for a change (-DU, -DV) somewhere else
+      in the height map (e.g. such as is found on the two sides of an edge in the height map). 
+      This property results in the distribution of modified normals to interact with light in the scene such that the pattern in the height map appears, since opposing sides of edges
+      will have their normals squashed in opposite directions, causing the shaded lighting to highlight edges during rendering.
       This can be observed in the rendered images here by seeing how for each polka dot on the height map there is one side of the rim which has a very high intensity and the opposite side
       of the rim will have very low intensity (i.e. be completely dark). 
       <br><br>
       <b><u>Displacement Mapping:</u></b> Displacement mapping does not change the normals itself, but rather modifies the position of each vertex (within the vertex shader) 
       in the direction of the its normal vector with a magnitude proportional to the height map. 
+      Having modified the geometry, the fragment shader then interacts as usual with the modified object, causing its render to change in reaction to the new geometry. 
       <br><br>
       <b><u>Comparison:</u></b> As we can see, in the case of this scene, bump mapping generally provides more fine-grained detail to the modified object appearance than displacement mapping. 
-      This is because bump mapping operates at the granularity of fragments, so every pixel in the image will be modified by the bump map. 
+      This is because bump mapping operates at the granularity of fragments and is independent of vertex counts, so every pixel in the image will be modified by the bump map. 
       In contrast, displacement mapping operates over vertices, so the granularity of modified units in these examples is much lower than in bump mapping 
-      (since there are presumably less cirle vertices than there are fragments in this scene).
+      (since there are presumably less circle vertices than there are fragments in this scene).
       Although fragments are interpolated through barycentric coordinates, we can see how in coarser spheres, displacement mapping yields a spiky topology on the sphere, 
       dispite the height map having circular plateaus. 
       This irregular spikyness in the coarser spheres is due to aliasing in the displacement map, since there are not enough vertices being raised to accurately represent
       the polka dot height map after displacement mapping.<br>
       This property can be most readily observed by looking at the final image, where we render a very fine-grained sphere (-a 248 -o 248). 
-      In this example we can see how the sphere now actually accurately reflects the topology of the height map, since enough vertices are being modified to reflect it. 
+      In this example we can see how the sphere now actually accurately reflects the topology of the height map, since enough vertices are being modified to represent it. 
       <br>
       In the fine-grained sphere example, we can see how much more detailed displacement mapping can be, since for tall enough height maps bump mapping will fail to provide the
       right look to objects since the topology of the object is not changed. 
-      Therefore, it seems that bump mapping can only accurately represent textures that don't have very tall height maps or that are rendered at a distance such that the 
+      Therefore, it seems that bump mapping can only accurately represent textures that don't have very large changes in height or that are rendered at a distance such that the 
       lack of topology modification doesn't matter too much. 
       <br><br>
-      In summary, it seems that for simpler meshes bump mapping is better able to represent height maps in detail. 
-      In contrast, displacement mapping can improve over it given enough vertices in the mesh. 
+      In summary, it seems that for simpler meshes bump mapping is better able to represent height maps in detail, since it is not directly dependent on the number of mesh vertices. 
+      In contrast, displacement mapping can improve over it given enough vertices in the mesh since it can represent topological changes directly. 
       Because of this it seems bump mapping may generally be a copmutationally cheaper alternative to displacement mapping, with good quality displacement mapping
       requiring lareger amounts of compute. 
       
