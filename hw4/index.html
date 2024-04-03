@@ -104,7 +104,15 @@
     <br><br>
 
     5. Finally, we learned how to implement vertex and fragment shaders for performing different types of shading on cloth scenes. 
-    
+    Shaders define programs that operate independently over individual units in the rendering pipeline, allowing for large improvements
+    in runtime performance from parallelization on a GPU. Vertex shaders define modifications over the vertices of object primitives in 
+    a scene. They are also used to compute vertex properties that the fragment shader will need to compute individual pixel colors, such
+    as vertex normals in world coordinates. Fragment shaders define operations over image pixels in order to determine their color values. 
+    In this project, we implemented a Blinn-Phong shader, a texture shader, displacement and bump mapping shaders, and a mirror shader. 
+    <br><br>
+    As a final takeaway, I thought it was really cool to see how we can not only procedurally generate a 3D object with simulated physics, 
+    but how we can then take that object and use techniques we've learned about throughout the class to incorporate that object as part
+    of a full rendering pipeline for generating images with it. 
     
   </div>
 
