@@ -561,9 +561,9 @@
 
     <p>
       A shader program is a program that is run in parallel for individual, independent units of a graphics pipeline (unit here being defined by the type of shader program being run) in
-      order to parallelize the rendering process of a scene. 
-      By running a shader program instance in parallel per unit, the efficiency of the rendering pipeline can be greatly increased. 
-      Two types of shader programs are <b>vertex shaders</b> and <b>fragment shaders</b>. <br><br>
+      order to speed up the rendering process of a scene. 
+      By running a shader program instance in parallel per unit (commonly on a GPU) the efficiency of the rendering pipeline can be greatly increased. 
+      Two types of shader programs that we implemented in this project are <b>vertex shaders</b> and <b>fragment shaders</b>. <br><br>
       
       <b><u>Vertex Shaders:</u></b>Vertex shaders are programs which operate over the vertices of primitives in a scene. 
       Their primary purpose is to (1) determine the screen coordinates of a given vertex during rasterization, and (2) 
@@ -576,12 +576,12 @@
       at a given screen coordinate can be used to determine the illumination contribution 
       from lights in the scene as well as model their interactions with different material properties (e.g. specular, lambertian), as is done with Blinn-Phong shading.
       Fragment shaders can also be used to color objects in the scene by sampling from a provided texture, either directly by essentially mapping the texture
-      to the object, or by simulating mirror <br><br>
+      to the object, or by simulating mirrors <br><br>
 
-      In summary, the two types of shaders work together by first having the vertex shader determine the final geometry of the scene (by potentially
+      In summary, these two types of shaders work together by first having the vertex shader determine the final geometry of the scene (by potentially
       modifying the scene vertices), as well as determining the world and on-screen coordinates of a given vertex. 
       This information is then passed on to the fragment shader, which uses interpolated vertex information in order to determine the final 
-      color of a given pixel in the scene. 
+      color of a given pixel in the scene by computing interactions between the surface and lights and/or other global properties of the scene. 
     </p>
 
 
